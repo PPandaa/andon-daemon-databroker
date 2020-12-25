@@ -11,6 +11,7 @@ import (
 
 	"github.com/bitly/go-simplejson"
 	"github.com/joho/godotenv"
+	"gopkg.in/mgo.v2"
 )
 
 var nowTime time.Time
@@ -58,6 +59,9 @@ func refreshEIToken() {
 func Starter() {
 	initGlobalVar()
 	refreshEIToken()
+	session, _ := mgo.Dial(mongodbURL)
+	db := session.DB(mongodbDatabase)
+	db.Login(mongodbUsername, mongodbPassword)
 	for {
 		nowTime = time.Now().In(taipeiTimeZone)
 		if nowTime.Minute() == 30 {
@@ -66,7 +70,10 @@ func Starter() {
 		// if nowTime.Minute()%2 == 0 && nowTime.Second() == 0 {
 		// 	DataBroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
 		// }
-		TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
-		time.Sleep(5 * time.Second)
+		// --------- broker.go
+		// fmt.Println("-- TransmitData Start", time.Now().In(taipeiTimeZone))
+		TransmitData(eiToken, db)
+		// fmt.Println("-- TransmitData End", time.Now().In(taipeiTimeZone))
+		time.Sleep(1 * time.Second)
 	}
 }
