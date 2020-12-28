@@ -9,7 +9,7 @@ RUN go build -o /go/main
 FROM gcr.io/distroless/base-debian10
 WORKDIR /go/
 COPY --from=build /go/main .
-COPY .env .
+COPY *.env ./
 
 EXPOSE 8080
 

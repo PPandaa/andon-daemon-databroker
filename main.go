@@ -21,7 +21,7 @@ var eiToken, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase, admi
 func initGlobalVar() {
 	taipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
 	utcTimeZone, _ = time.LoadLocation("UTC")
-	err := godotenv.Load(".env")
+	err := godotenv.Load("dev.env")
 	if err != nil {
 		log.Fatalf("Error loading env file")
 	}
@@ -60,13 +60,13 @@ func refreshEIToken() {
 
 //BrokerStarter ...
 func BrokerStarter() {
-	var nowTime time.Time
-	log.Printf("BrokerStarter Activation")
+	// var nowTime time.Time
+	log.Printf("Broker Activation")
 	session, _ := mgo.Dial(mongodbURL)
 	db := session.DB(mongodbDatabase)
 	db.Login(mongodbUsername, mongodbPassword)
 	for {
-		nowTime = time.Now().In(taipeiTimeZone)
+		// nowTime = time.Now().In(taipeiTimeZone)
 		// if nowTime.Minute()%2 == 0 && nowTime.Second() == 0 {
 		// 	DataBroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
 		// }
