@@ -36,37 +36,39 @@ func initGlobalVar() {
 }
 
 func refreshEIToken() {
-	httpClient := &http.Client{}
-	//----------get EIToken => var(eiToken)----------
-	httpRequestBody, _ := json.Marshal(map[string]string{
-		"username": adminUsername,
-		"password": adminPassword,
-	})
-	request, _ := http.NewRequest("POST", ssoURL+"/v4.0/auth/native", bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("accept", "application/json")
-	request.Header.Set("Content-Type", "application/json")
-	response, err := httpClient.Do(request)
-	for err != nil {
-		fmt.Println("Refresh EIToken Fail , Retry!!")
-		response, err = httpClient.Do(request)
+	for {
+		log.Println("RefreshEIToken")
+		httpClient := &http.Client{}
+		//----------get EIToken => var(eiToken)----------
+		httpRequestBody, _ := json.Marshal(map[string]string{
+			"username": adminUsername,
+			"password": adminPassword,
+		})
+		request, _ := http.NewRequest("POST", ssoURL+"/v4.0/auth/native", bytes.NewBuffer(httpRequestBody))
+		request.Header.Set("accept", "application/json")
+		request.Header.Set("Content-Type", "application/json")
+		response, err := httpClient.Do(request)
+		for err != nil {
+			fmt.Println("Refresh EIToken Fail , Retry!!")
+			response, err = httpClient.Do(request)
+		}
+		m, _ := simplejson.NewFromReader(response.Body)
+		eiToken = "EIToken=" + m.Get("accessToken").MustString()
+		time.Sleep(60 * time.Minute)
 	}
-	m, _ := simplejson.NewFromReader(response.Body)
-	eiToken = "EIToken=" + m.Get("accessToken").MustString()
-	// fmt.Println(eiToken)
 }
 
 //Starter ...
 func Starter() {
+	// wg.Add(1)
+	log.Printf("Activation")
 	initGlobalVar()
-	refreshEIToken()
+	go refreshEIToken()
 	session, _ := mgo.Dial(mongodbURL)
 	db := session.DB(mongodbDatabase)
 	db.Login(mongodbUsername, mongodbPassword)
 	for {
 		nowTime = time.Now().In(taipeiTimeZone)
-		if nowTime.Minute() == 30 {
-			refreshEIToken()
-		}
 		// if nowTime.Minute()%2 == 0 && nowTime.Second() == 0 {
 		// 	DataBroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
 		// }
@@ -76,4 +78,5 @@ func Starter() {
 		// fmt.Println("-- TransmitData End", time.Now().In(taipeiTimeZone))
 		time.Sleep(1 * time.Second)
 	}
+	// wg.Wait()
 }

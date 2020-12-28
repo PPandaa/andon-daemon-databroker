@@ -7,7 +7,7 @@ import (
 var wg sync.WaitGroup
 
 func main() {
-	wg.Add(4)
+	wg.Add(1)
 	go Starter()
 	wg.Wait()
 }

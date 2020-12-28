@@ -14,10 +14,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-const (
-	statusCodeParaName = "GYR"
-)
-
 //TransmitData ...
 func TransmitData(eiToken string, db *mgo.Database) {
 	machineRawDataCollection := db.C("iii.dae.MachineRawData")
@@ -40,7 +36,7 @@ func TransmitData(eiToken string, db *mgo.Database) {
 	// 	groupIDs = append(groupIDs, m.Get("data").Get("groups").GetIndex(indexOfGroups).Get("id").MustString())
 	// }
 	// fmt.Println(groupIDs)
-	groupIDs = []string{"R3JvdXA.X-LiKkwnAwAG1mqq"} //,"R3JvdXA.X9MpbyaqrwAG2CZV"} //, "R3JvdXA.X9MfFCaqrwAG2CZP"}
+	groupIDs = []string{"R3JvdXA.X-LiKkwnAwAG1mqq"} //,"R3JvdXA.X-LiKkwnAwAG1mqq"} //,"R3JvdXA.X9MpbyaqrwAG2CZV"} //, "R3JvdXA.X9MfFCaqrwAG2CZP"}
 	// ------------------------------------------------------ MachineData
 	// fmt.Println("-- GraphQL API Start", time.Now().In(taipeiTimeZone))
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
@@ -76,7 +72,7 @@ func TransmitData(eiToken string, db *mgo.Database) {
 					paraUpdateTime := paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("time").MustString()
 					timestampFS := strings.Replace(paraUpdateTime, "Z", "+00:00", 1)
 					timestamp, _ := time.Parse(time.RFC3339, timestampFS)
-					if paraName == statusCodeParaName {
+					if paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("mappingCode").Get("code").MustString() != "" {
 						var lastStatusRawValueResult map[string]interface{}
 						machineRawDataCollection.Pipe([]bson.M{{"$match": bson.M{"MachineID": machineID}}, {"$sort": bson.M{"ts": -1}}}).One(&lastStatusRawValueResult)
 						// fmt.Println(lastStatusRawValueResult)
