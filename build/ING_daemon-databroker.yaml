@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: measure-api-ing
+  name: andon-daemon-databroker
 spec:
   rules:
-  - host: custom1-api.amp.iii-ei-stack.com
+  - host: databroker.andon.eks005.en.internal
     http:
       paths:
       - backend:
-          serviceName: measure-api-svc
+          serviceName: andon-daemon-databroker
           servicePort: 8080
         path: /

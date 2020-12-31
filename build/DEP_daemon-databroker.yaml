@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: andon-daemon-databroker
+spec:
+  selector:
+    matchLabels:
+      run: andon-daemon-databroker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: andon-daemon-databroker
+    spec:
+      containers:
+      - name: andon-daemon-databroker
+        image: any99147/andon-daemon-databroker:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64M
+            ephemeral-storage: 64M
+          limits:
+            cpu: 40m
+            memory: 128M
+            ephemeral-storage: 128M
+        ports:
+        - containerPort: 8080
+          name: http

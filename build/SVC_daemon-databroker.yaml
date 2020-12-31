@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: measure-api-svc
+  name: andon-daemon-databroker
 spec:
   ports:
   - name: http
@@ -9,7 +9,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    run: measure-api
+    run: andon-daemon-databroker
   sessionAffinity: None
   type: ClusterIP
 status:
