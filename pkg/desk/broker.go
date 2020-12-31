@@ -36,23 +36,22 @@ func TransmitData(eiToken string, db *mgo.Database) {
 	// 	groupIDs = append(groupIDs, m.Get("data").Get("groups").GetIndex(indexOfGroups).Get("id").MustString())
 	// }
 	// fmt.Println(groupIDs)
-	groupIDs = []string{"R3JvdXA.X-LiKkwnAwAG1mqq"} //,"R3JvdXA.X-LiKkwnAwAG1mqq"} //,"R3JvdXA.X9MpbyaqrwAG2CZV"} //, "R3JvdXA.X9MfFCaqrwAG2CZP"}
+	groupIDs = []string{"R3JvdXA.X-0tJMYGAgAG-fkZ"} //,"R3JvdXA.X-LiKkwnAwAG1mqq"}
 	// ------------------------------------------------------ MachineData
 	// fmt.Println("-- GraphQL API Start", time.Now().In(taipeiTimeZone))
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
-		"query":     "query bigbang($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     name     timeZone     machines {       id       name       parameters(first: 2) {         nodes{           id           name           lastValue{             num             mappingCode{               code               message               status{                 index                 layer1{                   index                   name                 }               }             }             time           }         }       }     }   } }",
+		"query":     "query bigbang($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     name     timeZone     machines {       id       name       parameters(first: 10) {         nodes{           id           name           lastValue{             num             mappingCode{               code               message               status{                 index                 layer1{                   index                   name                 }               }             }             time           }         }       }     }   } }",
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
 	request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
 	request.Header.Set("cookie", eiToken)
 	request.Header.Set("Content-Type", "application/json")
-	response, err := httpClient.Do(request)
+	response, _ := httpClient.Do(request)
 	// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		m, _ := simplejson.NewFromReader(response.Body)
-		// fmt.Println(m)
+
+	m, _ := simplejson.NewFromReader(response.Body)
+	// fmt.Println(m)
+	if len(m.Get("errors").MustArray()) == 0 {
 		groupsLayer := m.Get("data").Get("groupsByIds")
 		for indexOfGroups := 0; indexOfGroups < len(groupsLayer.MustArray()); indexOfGroups++ {
 			groupID := groupsLayer.GetIndex(indexOfGroups).Get("id").MustString()
@@ -82,7 +81,7 @@ func TransmitData(eiToken string, db *mgo.Database) {
 						paraString += paraName + "  StatusRawValue: " + strconv.Itoa(statusRawValue) + "  StatusMapValue: " + strconv.Itoa(statusMapValue) + "  StatusLay1Value: " + strconv.Itoa(statusLay1Value) + "  Timestamp: " + timestampFS + " | "
 						//  DB Insert
 						if len(lastStatusRawValueResult) == 0 {
-							machineRawDataCollection.Insert(&map[string]interface{}{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value})
+							machineRawDataCollection.Insert(&map[string]interface{}{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "TabletStatusValue": 0})
 						} else {
 							if lastStatusRawValueResult["Timestamp"] != timestamp {
 								machineRawDataCollection.Update(bson.M{"_id": lastStatusRawValueResult["_id"]}, bson.M{"$set": bson.M{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value}})
@@ -96,6 +95,10 @@ func TransmitData(eiToken string, db *mgo.Database) {
 				// fmt.Println(paraString)
 			}
 		}
+	} else {
+		fmt.Println("---------------GraphQL Error---------------")
+		fmt.Println("Message:", m.Get("errors").GetIndex(0).Get("message").MustString())
+		fmt.Println("---------------GraphQL Error---------------")
 	}
 	// }
 }

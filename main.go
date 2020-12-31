@@ -17,13 +17,17 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
+const (
+	envName = "dev.env"
+)
+
 var taipeiTimeZone, utcTimeZone *time.Location
 var eiToken, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase, adminUsername, adminPassword, ssoURL string
 
 func initGlobalVar() {
 	taipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
 	utcTimeZone, _ = time.LoadLocation("UTC")
-	err := godotenv.Load("dev.env")
+	err := godotenv.Load(envName)
 	if err != nil {
 		log.Fatalf("Error loading env file")
 	}
@@ -62,19 +66,22 @@ func refreshEIToken() {
 
 //BrokerStarter ...
 func BrokerStarter() {
-	// var nowTime time.Time
+	var nowTime time.Time
 	log.Printf("Broker Activation")
 	session, _ := mgo.Dial(mongodbURL)
 	db := session.DB(mongodbDatabase)
 	db.Login(mongodbUsername, mongodbPassword)
 	for {
-		// nowTime = time.Now().In(taipeiTimeZone)
+		nowTime = time.Now().In(taipeiTimeZone)
 		// if nowTime.Minute()%2 == 0 && nowTime.Second() == 0 {
 		// 	databroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
 		// }
 		// --------- broker.go
 		// fmt.Println("-- TransmitData Start", time.Now().In(taipeiTimeZone))
 		desk.TransmitData(eiToken, db)
+		transmitDataEndtime := time.Now().In(taipeiTimeZone)
+		transmitDataExectime := transmitDataEndtime.Sub(nowTime)
+		log.Printf("TransmitDataExecTime: %.1f Sec\n", transmitDataExectime.Seconds())
 		// fmt.Println("-- TransmitData End", time.Now().In(taipeiTimeZone))
 		time.Sleep(1 * time.Second)
 	}
