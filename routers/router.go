@@ -18,6 +18,11 @@ func InitRouter() *gin.Engine {
 	//----------------->
 	apiv1 := r.Group("/")
 	{
+		apiv1.GET("/", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "OK",
+			})
+		})
 		apiv1.POST("/iot-2/evt/waconn/fmt/:sourceId", v1.PostOutbound_waconn)
 		apiv1.POST("/iot-2/evt/ifpcfg/fmt/:sourceId", v1.PostOutbound_ifpcfg)
 		apiv1.POST("/iot-2/evt/wacfg/fmt/:sourceId", v1.PostOutbound_wacfg)
