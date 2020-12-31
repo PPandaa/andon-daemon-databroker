@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"databroker/pkg/desk"
+	"databroker/routers"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -68,11 +70,11 @@ func BrokerStarter() {
 	for {
 		// nowTime = time.Now().In(taipeiTimeZone)
 		// if nowTime.Minute()%2 == 0 && nowTime.Second() == 0 {
-		// 	DataBroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
+		// 	databroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
 		// }
 		// --------- broker.go
 		// fmt.Println("-- TransmitData Start", time.Now().In(taipeiTimeZone))
-		TransmitData(eiToken, db)
+		desk.TransmitData(eiToken, db)
 		// fmt.Println("-- TransmitData End", time.Now().In(taipeiTimeZone))
 		time.Sleep(1 * time.Second)
 	}
@@ -82,9 +84,22 @@ var wg sync.WaitGroup
 
 func main() {
 	log.Printf("Main Activation")
-	wg.Add(2)
+
 	initGlobalVar()
 	go refreshEIToken()
 	go BrokerStarter()
-	wg.Wait()
+
+	//------------------------->
+	// v1.Test()
+
+	router := routers.InitRouter()
+
+	s := &http.Server{
+		Addr:    fmt.Sprintf(":%d", 8080),
+		Handler: router,
+		// ReadTimeout:    ReadTimeout,
+		// WriteTimeout:   WriteTimeout,
+		// MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
 }

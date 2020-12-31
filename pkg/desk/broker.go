@@ -1,4 +1,4 @@
-package main
+package desk
 
 import (
 	"bytes"

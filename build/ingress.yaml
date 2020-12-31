@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: measure-api-ing
+spec:
+  rules:
+  - host: custom1-api.amp.iii-ei-stack.com
+    http:
+      paths:
+      - backend:
+          serviceName: measure-api-svc
+          servicePort: 8080
+        path: /
