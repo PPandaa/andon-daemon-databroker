@@ -67,6 +67,7 @@ func refreshEIToken() {
 //BrokerStarter ...
 func BrokerStarter() {
 	var nowTime time.Time
+	defaulCheck := 10
 	log.Printf("Broker Activation")
 	session, _ := mgo.Dial(mongodbURL)
 	db := session.DB(mongodbDatabase)
@@ -79,9 +80,12 @@ func BrokerStarter() {
 		// --------- broker.go
 		// fmt.Println("-- TransmitData Start", time.Now().In(taipeiTimeZone))
 		desk.TransmitData(eiToken, db)
-		transmitDataEndtime := time.Now().In(taipeiTimeZone)
-		transmitDataExectime := transmitDataEndtime.Sub(nowTime)
-		log.Printf("TransmitDataExecTime: %.1f Sec\n", transmitDataExectime.Seconds())
+		if nowTime.Minute() == 0 || defaulCheck != 0 {
+			transmitDataEndtime := time.Now().In(taipeiTimeZone)
+			transmitDataExectime := transmitDataEndtime.Sub(nowTime)
+			log.Printf("TransmitDataExecTime: %.1f Sec\n", transmitDataExectime.Seconds())
+			defaulCheck--
+		}
 		// fmt.Println("-- TransmitData End", time.Now().In(taipeiTimeZone))
 		time.Sleep(1 * time.Second)
 	}
