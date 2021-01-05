@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"databroker/db"
 	"databroker/pkg/desk"
 	"databroker/routers"
 	"encoding/json"
@@ -103,6 +104,7 @@ func main() {
 	//------------------------->
 	// v1.Test()
 
+	db.StartMongo()
 	router := routers.InitRouter()
 
 	s := &http.Server{
