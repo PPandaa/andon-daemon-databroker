@@ -15,7 +15,7 @@ import (
 )
 
 //TransmitData ...
-func TransmitData(eiToken string, db *mgo.Database) {
+func TransmitData(nowTime time.Time, token string, db *mgo.Database) {
 	machineRawDataCollection := db.C("iii.dae.MachineRawData")
 	var groupIDs []string
 	//  ------------------------ GroupData
@@ -44,7 +44,7 @@ func TransmitData(eiToken string, db *mgo.Database) {
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
 	request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("cookie", eiToken)
+	request.Header.Set("cookie", token)
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
 	// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
@@ -96,9 +96,8 @@ func TransmitData(eiToken string, db *mgo.Database) {
 			}
 		}
 	} else {
-		fmt.Println("---------------GraphQL Error---------------")
-		fmt.Println("Message:", m.Get("errors").GetIndex(0).Get("message").MustString())
-		fmt.Println("---------------GraphQL Error---------------")
+		taipeiTimeZone, _ := time.LoadLocation("Asia/Taipei")
+		fmt.Println(time.Now().In(taipeiTimeZone), "=>  GraphQL Error ->", m.Get("errors").GetIndex(0).Get("message").MustString())
 	}
 	// }
 }

@@ -10,20 +10,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
-	"github.com/bitly/go-simplejson"
 	"github.com/joho/godotenv"
 	"gopkg.in/mgo.v2"
 )
 
 const (
-	envName = "demo.env"
+	envName = "dev.env"
 )
 
 var taipeiTimeZone, utcTimeZone *time.Location
-var eiToken, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase, adminUsername, adminPassword, ssoURL string
+var token, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase, adminUsername, adminPassword, ssoURL string
 
 func initGlobalVar() {
 	taipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
@@ -42,50 +42,52 @@ func initGlobalVar() {
 	fmt.Println("MongoDB ->", " URL:", mongodbURL, " Database:", mongodbDatabase)
 }
 
-func refreshEIToken() {
+func refreshToken() {
 	for {
-		log.Println("RefreshEIToken")
 		httpClient := &http.Client{}
-		//----------get EIToken => var(eiToken)----------
-		httpRequestBody, _ := json.Marshal(map[string]string{
-			"username": adminUsername,
-			"password": adminPassword,
+		content := map[string]string{"username": adminUsername, "password": adminPassword}
+		variable := map[string]interface{}{"input": content}
+		httpRequestBody, _ := json.Marshal(map[string]interface{}{
+			"query":     "mutation signIn($input: SignInInput!) {   signIn(input: $input) {     user {       name       __typename     }     __typename   } }",
+			"variables": variable,
 		})
-		request, _ := http.NewRequest("POST", ssoURL+"/v4.0/auth/native", bytes.NewBuffer(httpRequestBody))
-		request.Header.Set("accept", "application/json")
+		request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
 		request.Header.Set("Content-Type", "application/json")
-		response, err := httpClient.Do(request)
-		for err != nil {
-			fmt.Println("Refresh EIToken Fail , Retry!!")
-			response, err = httpClient.Do(request)
-		}
-		m, _ := simplejson.NewFromReader(response.Body)
-		eiToken = "EIToken=" + m.Get("accessToken").MustString()
+		response, _ := httpClient.Do(request)
+		// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
+		header := response.Header
+		// fmt.Println(header)
+		// m, _ := simplejson.NewFromReader(response.Header)
+		cookie := header["Set-Cookie"]
+		tempSplit := strings.Split(cookie[0], ";")
+		ifpToken := tempSplit[0]
+		tempSplit = strings.Split(cookie[1], ";")
+		eiToken := tempSplit[0]
+		token = ifpToken + ";" + eiToken
+		fmt.Println(time.Now().In(taipeiTimeZone), "=>  Refresh Token ->", token)
 		time.Sleep(60 * time.Minute)
 	}
 }
 
 //BrokerStarter ...
 func BrokerStarter() {
-	var nowTime time.Time
-	defaulCheck := 10
-	log.Printf("Broker Activation")
+	fmt.Println(time.Now().In(taipeiTimeZone), "=>  Broker Activation")
 	session, _ := mgo.Dial(mongodbURL)
 	db := session.DB(mongodbDatabase)
 	db.Login(mongodbUsername, mongodbPassword)
 	for {
+		var nowTime time.Time
 		nowTime = time.Now().In(taipeiTimeZone)
 		// if nowTime.Minute()%2 == 0 && nowTime.Second() == 0 {
 		// 	databroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
 		// }
 		// --------- broker.go
 		// fmt.Println("-- TransmitData Start", time.Now().In(taipeiTimeZone))
-		desk.TransmitData(eiToken, db)
-		if nowTime.Minute() == 0 || defaulCheck != 0 {
+		desk.TransmitData(nowTime, token, db)
+		if nowTime.Minute() == 0 && nowTime.Second() <= 10 {
 			transmitDataEndtime := time.Now().In(taipeiTimeZone)
 			transmitDataExectime := transmitDataEndtime.Sub(nowTime)
-			log.Printf("TransmitDataExecTime: %.1f Sec\n", transmitDataExectime.Seconds())
-			defaulCheck--
+			fmt.Printf("%s =>  TransmitDataExecTime ->  %.1f Sec\n", nowTime, transmitDataExectime.Seconds())
 		}
 		// fmt.Println("-- TransmitData End", time.Now().In(taipeiTimeZone))
 		time.Sleep(1 * time.Second)
@@ -95,10 +97,9 @@ func BrokerStarter() {
 var wg sync.WaitGroup
 
 func main() {
-	log.Printf("Main Activation")
-
+	wg.Add(2)
 	initGlobalVar()
-	go refreshEIToken()
+	go refreshToken()
 	go BrokerStarter()
 
 	//------------------------->
@@ -115,4 +116,5 @@ func main() {
 		// MaxHeaderBytes: 1 << 20,
 	}
 	s.ListenAndServe()
+	wg.Wait()
 }
