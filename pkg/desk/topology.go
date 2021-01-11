@@ -40,6 +40,8 @@ func GetTopology(token string, db *mgo.Database) {
 			grouptopologyCollection.Pipe([]bson.M{{"$match": bson.M{"GroupID": groupID}}}).One(&lastStatusRawValueResult)
 			if len(lastStatusRawValueResult) == 0 {
 				grouptopologyCollection.Insert(&map[string]interface{}{"GroupID": groupID, "GroupName": groupName, "ParentID": parentID, "TimeZone": timeZone})
+			} else {
+				grouptopologyCollection.Update(bson.M{"_id": lastStatusRawValueResult["_id"]}, bson.M{"$set": bson.M{"GroupID": groupID, "GroupName": groupName, "ParentID": parentID, "TimeZone": timeZone}})
 			}
 		}
 	} else {

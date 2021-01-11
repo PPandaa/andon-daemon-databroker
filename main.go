@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	envName = "dev.env"
+	envName = "demo.env"
 )
 
 var taipeiTimeZone, utcTimeZone *time.Location
@@ -96,12 +96,14 @@ func BrokerStarter() {
 
 //TopoStarter ...
 func TopoStarter() {
-	time.Sleep(10 * time.Second)
 	fmt.Println(time.Now().In(taipeiTimeZone), "=>  Topo Activation")
 	session, _ := mgo.Dial(mongodbURL)
 	db := session.DB(mongodbDatabase)
 	db.Login(mongodbUsername, mongodbPassword)
-	desk.GetTopology(token, db)
+	for {
+		time.Sleep(10 * time.Second)
+		desk.GetTopology(token, db)
+	}
 }
 
 var wg sync.WaitGroup
@@ -111,7 +113,7 @@ func main() {
 	initGlobalVar()
 	go refreshToken()
 	go BrokerStarter()
-	TopoStarter()
+	go TopoStarter()
 
 	//------------------------->
 	// v1.Test()
