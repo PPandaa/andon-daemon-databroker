@@ -20,7 +20,7 @@ func GetTopology(token string, db *mgo.Database) {
 	httpClient := &http.Client{}
 
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
-		"query": "query groupsWithInboundConnector {   groups {     id     name     parentId     inboundConnector {       id       __typename        }             __typename   } }",
+		"query": "query groupsWithInboundConnector {   groups {     id     name     parentId     timeZone     inboundConnector {       id       __typename        }             __typename   } }",
 	})
 	request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
 	request.Header.Set("cookie", token)
@@ -34,11 +34,12 @@ func GetTopology(token string, db *mgo.Database) {
 			groupID := groupsLayer.GetIndex(indexOfGroups).Get("id").MustString()
 			groupName := groupsLayer.GetIndex(indexOfGroups).Get("name").MustString()
 			parentID := groupsLayer.GetIndex(indexOfGroups).Get("parentId").MustString()
-			fmt.Println("  GroupID:", groupID, " GroupName:", groupName, "ParentID:", parentID)
+			timeZone := groupsLayer.GetIndex(indexOfGroups).Get("timeZone").MustString()
+			//fmt.Println("  GroupID:", groupID, " GroupName:", groupName, "ParentID:", parentID)
 			var lastStatusRawValueResult map[string]interface{}
 			grouptopologyCollection.Pipe([]bson.M{{"$match": bson.M{"GroupID": groupID}}}).One(&lastStatusRawValueResult)
 			if len(lastStatusRawValueResult) == 0 {
-				grouptopologyCollection.Insert(&map[string]interface{}{"GroupID": groupID, "GroupName": groupName, "ParentID": parentID})
+				grouptopologyCollection.Insert(&map[string]interface{}{"GroupID": groupID, "GroupName": groupName, "ParentID": parentID, "TimeZone": timeZone})
 			}
 		}
 	} else {
