@@ -94,6 +94,16 @@ func BrokerStarter() {
 	}
 }
 
+//TopoStarter ...
+func TopoStarter() {
+	time.Sleep(10 * time.Second)
+	fmt.Println(time.Now().In(taipeiTimeZone), "=>  Topo Activation")
+	session, _ := mgo.Dial(mongodbURL)
+	db := session.DB(mongodbDatabase)
+	db.Login(mongodbUsername, mongodbPassword)
+	desk.GetTopology(token, db)
+}
+
 var wg sync.WaitGroup
 
 func main() {
@@ -101,6 +111,7 @@ func main() {
 	initGlobalVar()
 	go refreshToken()
 	go BrokerStarter()
+	TopoStarter()
 
 	//------------------------->
 	// v1.Test()
