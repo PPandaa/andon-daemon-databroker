@@ -17,6 +17,7 @@ import (
 //TransmitData ...
 func TransmitData(nowTime time.Time, token string, db *mgo.Database) {
 	machineRawDataCollection := db.C("iii.dae.MachineRawData")
+	groupTopoCollection := db.C("iii.cfg.GroupTopology")
 	var groupIDs []string
 	//  ------------------------ GroupData
 	//    ---------------------- GraphQl
@@ -35,8 +36,12 @@ func TransmitData(nowTime time.Time, token string, db *mgo.Database) {
 	// for indexOfGroups := 0; indexOfGroups < len(m.Get("data").Get("groups").MustArray()); indexOfGroups++ {
 	// 	groupIDs = append(groupIDs, m.Get("data").Get("groups").GetIndex(indexOfGroups).Get("id").MustString())
 	// }
-	// fmt.Println(groupIDs)
-	groupIDs = []string{"R3JvdXA.X-0tJMYGAgAG-fkZ"} //,"R3JvdXA.X-LiKkwnAwAG1mqq"}
+	var groupTopo []map[string]interface{}
+	groupTopoCollection.Find(bson.M{}).All(&groupTopo)
+	for _, groupV := range groupTopo {
+		groupIDs = append(groupIDs, groupV["GroupID"].(string))
+	}
+	// groupIDs = []string{"R3JvdXA.X-0tJMYGAgAG-fkZ"} //,"R3JvdXA.X-LiKkwnAwAG1mqq"}
 	// ------------------------------------------------------ MachineData
 	// fmt.Println("-- GraphQL API Start", time.Now().In(taipeiTimeZone))
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
@@ -71,7 +76,8 @@ func TransmitData(nowTime time.Time, token string, db *mgo.Database) {
 					paraUpdateTime := paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("time").MustString()
 					timestampFS := strings.Replace(paraUpdateTime, "Z", "+00:00", 1)
 					timestamp, _ := time.Parse(time.RFC3339, timestampFS)
-					if paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("mappingCode").Get("code").MustString() != "" {
+					// if paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("mappingCode").Get("code").MustString() != "" {
+					if paramaterLayer.GetIndex(indexOfParamater).Get("name").MustString() == "GYR" {
 						var lastStatusRawValueResult map[string]interface{}
 						machineRawDataCollection.Pipe([]bson.M{{"$match": bson.M{"MachineID": machineID}}, {"$sort": bson.M{"ts": -1}}}).One(&lastStatusRawValueResult)
 						// fmt.Println(lastStatusRawValueResult)

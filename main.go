@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	envName = "demo.env"
+	envName = "dev.env"
 )
 
 var taipeiTimeZone, utcTimeZone *time.Location
