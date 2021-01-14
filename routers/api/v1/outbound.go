@@ -9,9 +9,11 @@ import (
 	"databroker/db"
 	"databroker/model"
 
+	"github.com/bitly/go-simplejson"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
 	. "github.com/logrusorgru/aurora"
+	"gopkg.in/mgo.v2/bson"
 )
 
 //由於目前對方發送過來的post body內容無法預測規則性，因此收到後先全部存db
@@ -49,6 +51,15 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 	err := db.Insert(db.Ifpcfg, v)
 	if err == nil {
 		glog.Info("---ifpcg inserted---")
+	}
+
+	requestBody, _ := simplejson.NewFromReader(c.Request.Body)
+	if requestBody.Get("group").Get("removed") != nil {
+		for i := 0; i < len(requestBody.Get("group").Get("removed").MustArray()); i++ {
+			removeid := requestBody.Get("group").Get("removed").GetIndex(i).Get("id").MustString()
+			msg := bson.M{"_id": removeid}
+			db.Delete(db.Topo, msg)
+		}
 	}
 
 	// method1: use gjson to get the field you want

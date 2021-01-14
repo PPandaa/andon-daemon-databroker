@@ -109,3 +109,12 @@ func Insert(collection string, v interface{}) error {
 	}
 	return err
 }
+
+func Delete(collection string, v interface{}) error {
+	c := MongoDB.UseCollection(collection)
+	err := c.Remove(v)
+	if err != nil {
+		glog.Error(err)
+	}
+	return err
+}
