@@ -20,7 +20,7 @@ func GetTopology(token string, db *mgo.Database) {
 	httpClient := &http.Client{}
 
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
-		"query": "query groupsWithInboundConnector {   groups {     id     name     parentId     timeZone     inboundConnector {       id       __typename        }             __typename   } }",
+		"query": "query groupsWithInboundConnector {   groups {     _id     id     name     parentId     timeZone     inboundConnector {       id       __typename        }             __typename   } }",
 	})
 	request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
 	request.Header.Set("cookie", token)
@@ -31,6 +31,7 @@ func GetTopology(token string, db *mgo.Database) {
 	if len(m.Get("errors").MustArray()) == 0 {
 		groupsLayer := m.Get("data").Get("groups")
 		for indexOfGroups := 0; indexOfGroups < len(groupsLayer.MustArray()); indexOfGroups++ {
+			ID := groupsLayer.GetIndex(indexOfGroups).Get("_id").MustString()
 			groupID := groupsLayer.GetIndex(indexOfGroups).Get("id").MustString()
 			groupName := groupsLayer.GetIndex(indexOfGroups).Get("name").MustString()
 			parentID := groupsLayer.GetIndex(indexOfGroups).Get("parentId").MustString()
@@ -39,7 +40,7 @@ func GetTopology(token string, db *mgo.Database) {
 			var lastStatusRawValueResult map[string]interface{}
 			grouptopologyCollection.Pipe([]bson.M{{"$match": bson.M{"GroupID": groupID}}}).One(&lastStatusRawValueResult)
 			if len(lastStatusRawValueResult) == 0 {
-				grouptopologyCollection.Insert(&map[string]interface{}{"GroupID": groupID, "GroupName": groupName, "ParentID": parentID, "TimeZone": timeZone})
+				grouptopologyCollection.Insert(&map[string]interface{}{"_id": ID, "GroupID": groupID, "GroupName": groupName, "ParentID": parentID, "TimeZone": timeZone})
 			} else {
 				grouptopologyCollection.Update(bson.M{"_id": lastStatusRawValueResult["_id"]}, bson.M{"$set": bson.M{"GroupID": groupID, "GroupName": groupName, "ParentID": parentID, "TimeZone": timeZone}})
 			}
