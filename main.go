@@ -23,7 +23,7 @@ const (
 )
 
 var taipeiTimeZone, utcTimeZone *time.Location
-var token, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase, adminUsername, adminPassword, ssoURL string
+var mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase, adminUsername, adminPassword, ssoURL string
 
 func initGlobalVar() {
 	taipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
@@ -63,8 +63,8 @@ func refreshToken() {
 		ifpToken := tempSplit[0]
 		tempSplit = strings.Split(cookie[1], ";")
 		eiToken := tempSplit[0]
-		token = ifpToken + ";" + eiToken
-		fmt.Println(time.Now().In(taipeiTimeZone), "=>  Refresh Token ->", token)
+		desk.Token = ifpToken + ";" + eiToken
+		fmt.Println(time.Now().In(taipeiTimeZone), "=>  Refresh Token ->", desk.Token)
 		time.Sleep(60 * time.Minute)
 	}
 }
@@ -83,7 +83,7 @@ func BrokerStarter() {
 		// }
 		// --------- broker.go
 		// fmt.Println("-- TransmitData Start", time.Now().In(taipeiTimeZone))
-		desk.TransmitData(nowTime, token, db)
+		desk.TransmitData(nowTime, db)
 		if nowTime.Minute() == 0 && nowTime.Second() <= 10 {
 			transmitDataEndtime := time.Now().In(taipeiTimeZone)
 			transmitDataExectime := transmitDataEndtime.Sub(nowTime)
@@ -102,14 +102,14 @@ func TopoStarter() {
 	db.Login(mongodbUsername, mongodbPassword)
 	for {
 		time.Sleep(10 * time.Second)
-		desk.GetTopology(token, db)
+		desk.GetTopology(desk.Token, db)
 	}
 }
 
 var wg sync.WaitGroup
 
 func main() {
-	wg.Add(2)
+	wg.Add(3)
 	initGlobalVar()
 	go refreshToken()
 	go BrokerStarter()

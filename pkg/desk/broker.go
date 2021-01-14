@@ -15,7 +15,7 @@ import (
 )
 
 //TransmitData ...
-func TransmitData(nowTime time.Time, token string, db *mgo.Database) {
+func TransmitData(nowTime time.Time, db *mgo.Database) {
 	machineRawDataCollection := db.C("iii.dae.MachineRawData")
 	groupTopoCollection := db.C("iii.cfg.GroupTopology")
 	var groupIDs []string
@@ -49,7 +49,7 @@ func TransmitData(nowTime time.Time, token string, db *mgo.Database) {
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
 	request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("cookie", token)
+	request.Header.Set("cookie", Token)
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
 	// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
