@@ -71,10 +71,10 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 		glog.Info("---ifpcg inserted---")
 	}
 
-	requestBody, _ := simplejson.NewFromReader(c.Request.Body)
-	if requestBody.Get("group").Get("removed") != nil {
-		for i := 0; i < len(requestBody.Get("group").Get("removed").MustArray()); i++ {
-			removeid := requestBody.Get("group").Get("removed").GetIndex(i).Get("id").MustString()
+	simpleJsonBody, _ := simplejson.NewJson(body)
+	if simpleJsonBody.Get("group").Get("removed") != nil {
+		for i := 0; i < len(simpleJsonBody.Get("group").Get("removed").MustArray()); i++ {
+			removeid := simpleJsonBody.Get("group").Get("removed").GetIndex(i).Get("id").MustString()
 			msg := bson.M{"_id": removeid}
 			db.Delete(db.Topo, msg)
 		}
