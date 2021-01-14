@@ -100,10 +100,8 @@ func TopoStarter() {
 	session, _ := mgo.Dial(mongodbURL)
 	db := session.DB(mongodbDatabase)
 	db.Login(mongodbUsername, mongodbPassword)
-	for {
-		time.Sleep(10 * time.Second)
-		desk.GetTopology(desk.Token, db)
-	}
+	time.Sleep(5 * time.Second)
+	desk.GetTopology(db)
 }
 
 var wg sync.WaitGroup
@@ -113,7 +111,7 @@ func main() {
 	initGlobalVar()
 	go refreshToken()
 	go BrokerStarter()
-	go TopoStarter()
+	TopoStarter()
 
 	//------------------------->
 	// v1.Test()

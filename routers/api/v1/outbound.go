@@ -5,14 +5,17 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
 	"databroker/db"
 	"databroker/model"
+	"databroker/pkg/desk"
 
 	"github.com/bitly/go-simplejson"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
 	. "github.com/logrusorgru/aurora"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -78,6 +81,13 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 			msg := bson.M{"_id": removeid}
 			db.Delete(db.Topo, msg)
 		}
+	}
+	if simpleJsonBody.Get("group").Get("items") != nil {
+		fmt.Println("insert&upadte=>  Topo Activation")
+		session, _ := mgo.Dial(os.Getenv("MONGODB_URL"))
+		db := session.DB(os.Getenv("MONGODB_DATABASE"))
+		db.Login(os.Getenv("MONGODB_USERNAME"), os.Getenv("MONGODB_PASSWORD"))
+		desk.GetTopology(db)
 	}
 
 	// method1: use gjson to get the field you want
