@@ -18,6 +18,24 @@ import (
 
 //由於目前對方發送過來的post body內容無法預測規則性，因此收到後先全部存db
 
+func PostOutbound_wadata(c *gin.Context) {
+	sourceId := c.Param("sourceId") //取得URL中参数
+	fmt.Println(BrightBlue("------------------wadata-------------------"), sourceId)
+
+	body, _ := ioutil.ReadAll(c.Request.Body)
+	fmt.Println(BrightBlue(string(body)))
+
+	var v interface{}
+	if err := json.Unmarshal(body, &v); err != nil {
+		glog.Error(err)
+	}
+
+	err := db.Insert(db.Wadata, v)
+	if err == nil {
+		glog.Info("---wadata inserted---")
+	}
+}
+
 func PostOutbound_waconn(c *gin.Context) {
 	sourceId := c.Param("sourceId") //取得URL中参数
 	fmt.Println(BrightBlue("------------------waconn-------------------"), sourceId)

@@ -26,6 +26,8 @@ func InitRouter() *gin.Engine {
 		apiv1.POST("/iot-2/evt/waconn/fmt/:sourceId", v1.PostOutbound_waconn)
 		apiv1.POST("/iot-2/evt/ifpcfg/fmt/:sourceId", v1.PostOutbound_ifpcfg)
 		apiv1.POST("/iot-2/evt/wacfg/fmt/:sourceId", v1.PostOutbound_wacfg)
+		apiv1.POST("/iot-2/evt/wadata/fmt/:sourceId", v1.PostOutbound_wadata)
+
 	}
 
 	return r
