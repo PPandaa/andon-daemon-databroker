@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 
+	"databroker/config"
 	"databroker/db"
 	"databroker/model"
 	"databroker/pkg/desk"
@@ -75,6 +75,8 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 	}
 
 	simpleJsonBody, _ := simplejson.NewJson(body)
+
+	// remove
 	if simpleJsonBody.Get("group").Get("removed") != nil {
 		for i := 0; i < len(simpleJsonBody.Get("group").Get("removed").MustArray()); i++ {
 			removeid := simpleJsonBody.Get("group").Get("removed").GetIndex(i).Get("id").MustString()
@@ -82,12 +84,40 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 			db.Delete(db.Topo, msg)
 		}
 	}
+	if simpleJsonBody.Get("machine").Get("removed") != nil {
+		for i := 0; i < len(simpleJsonBody.Get("machine").Get("removed").MustArray()); i++ {
+			removeid := simpleJsonBody.Get("machine").Get("removed").GetIndex(i).Get("id").MustString()
+			msg := bson.M{"_id": removeid}
+			db.Delete(db.MachineRawData, msg)
+		}
+	}
+	if simpleJsonBody.Get("parameter").Get("removed") != nil {
+		for i := 0; i < len(simpleJsonBody.Get("parameter").Get("removed").MustArray()); i++ {
+			parameterid := simpleJsonBody.Get("parameter").Get("removed").GetIndex(i).Get("id").MustString()
+			query := bson.M{"Paramater_id": parameterid}
+			msg := bson.M{"StatusRawValue": 9, "StatusLay1Value": 9000, "StatusMapValue": 9000}
+			db.Upadte(db.MachineRawData, query, msg)
+		}
+	}
+
+	// insert or update
 	if simpleJsonBody.Get("group").Get("items") != nil {
-		fmt.Println("insert&upadte=>  Topo Activation")
-		session, _ := mgo.Dial(os.Getenv("MONGODB_URL"))
-		db := session.DB(os.Getenv("MONGODB_DATABASE"))
-		db.Login(os.Getenv("MONGODB_USERNAME"), os.Getenv("MONGODB_PASSWORD"))
-		desk.GetTopology(db)
+		if len(simpleJsonBody.Get("machine").Get("items").MustArray()) == 0 {
+			if len(simpleJsonBody.Get("parameter").Get("items").MustArray()) == 0 {
+				fmt.Println("insert&upadte=>  Topo Activation")
+				session, _ := mgo.Dial(config.MongodbURL)
+				db := session.DB(config.MongodbDatabase)
+				db.Login(config.MongodbUsername, config.MongodbPassword)
+				desk.GetTopology(db)
+			}
+		} else {
+			// 如果 machine items > 0
+			// 拿到 simpleJsonBody group _id (可能有多個)
+			//for i := 0; i < len(simpleJsonBody.Get("group").Get("items").MustArray()); i++ {
+			//	groupid := simpleJsonBody.Get("group").Get("items").GetIndex(i).Get("id").MustString()
+			//  將 groupid 傳給 peter borker func 去打GQL 拿該GROUP 底下的所有資料
+			//}
+		}
 	}
 
 	// method1: use gjson to get the field you want

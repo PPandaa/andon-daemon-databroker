@@ -1,10 +1,11 @@
 package config
 
 const (
-	EnvName = "dev.env"
+	EnvName = "tienkang.env"
 )
 
 var (
+	IFP_URL         string
 	MongodbURL      string
 	MongodbUsername string
 	MongodbPassword string

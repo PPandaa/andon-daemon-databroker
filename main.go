@@ -59,7 +59,7 @@ func refreshToken() {
 		ifpToken := tempSplit[0]
 		tempSplit = strings.Split(cookie[1], ";")
 		eiToken := tempSplit[0]
-		desk.Token = ifpToken + ";" + eiToken
+		config.Token = ifpToken + ";" + eiToken
 		fmt.Println(time.Now().In(taipeiTimeZone), "=>  Refresh Token ->", config.Token)
 		time.Sleep(60 * time.Minute)
 	}

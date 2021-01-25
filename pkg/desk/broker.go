@@ -47,7 +47,7 @@ func TransmitData(nowTime time.Time, db *mgo.Database) {
 	// fmt.Println("-- GraphQL API Start", time.Now().In(taipeiTimeZone))
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
 		// "query":     "query bigbang($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     name     timeZone     machines {       id       name       parameters(first: 300) {         nodes{           id           name           lastValue{             num             mappingCode{               code               message               status{                 index                 layer1{                   index                   name                 }               }             }             time           }         }       }     }   } }",
-		"query":     "query bigbang($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     name     timeZone     machines {       id       name       parameters(first: 10) {         nodes{           id           name           lastValue{             num             mappingCode{               code               message               status{                 index                 layer1{                   index                   name                 }               }             }             time           }         }       }parameterByName(name: \"status\") {           id           name           lastValue{             num             mappingCode{               code               message               status{                 index                 layer1{                   index                   name                 }               }             }             time           }                }     }   } }",
+		"query":     "query bigbang($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     name     timeZone     machines {       _id       id       name       parameters(first: 10) {         nodes{           id           name           lastValue{             num             mappingCode{               code               message               status{                 index                 layer1{                   index                   name                 }               }             }             time           }         }       }parameterByName(name: \"status\") {           _id       id           name           lastValue{             num             mappingCode{               code               message               status{                 index                 layer1{                   index                   name                 }               }             }             time           }                }     }   } }",
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
 	request, _ := http.NewRequest("POST", "https://ifp-organizer-tienkang-eks002.sa.wise-paas.com/graphql", bytes.NewBuffer(httpRequestBody))
@@ -67,6 +67,7 @@ func TransmitData(nowTime time.Time, db *mgo.Database) {
 			machinesLayer := groupsLayer.GetIndex(indexOfGroups).Get("machines")
 			// fmt.Println(machinesLayer)
 			for indexOfMachines := 0; indexOfMachines < len(machinesLayer.MustArray()); indexOfMachines++ {
+				_id := machinesLayer.GetIndex(indexOfMachines).Get("_id").MustString()
 				machineID := machinesLayer.GetIndex(indexOfMachines).Get("id").MustString()
 				machineName := machinesLayer.GetIndex(indexOfMachines).Get("name").MustString()
 				// fmt.Println("  MachineID:", machineID, " MachineName:", machineName)
@@ -82,16 +83,18 @@ func TransmitData(nowTime time.Time, db *mgo.Database) {
 					var lastStatusRawValueResult map[string]interface{}
 					machineRawDataCollection.Pipe([]bson.M{{"$match": bson.M{"MachineID": machineID}}, {"$sort": bson.M{"ts": -1}}}).One(&lastStatusRawValueResult)
 					// fmt.Println(lastStatusRawValueResult)
+					paramater_id := paramaterLayer.Get("_id").MustString()
+					// fmt.Println(paramater_id)
 					statusRawValue := paramaterLayer.Get("lastValue").Get("num").MustInt()
 					statusMapValue := paramaterLayer.Get("lastValue").Get("mappingCode").Get("status").Get("index").MustInt()
 					statusLay1Value := paramaterLayer.Get("lastValue").Get("mappingCode").Get("status").Get("layer1").Get("index").MustInt()
 					paraString += paraName + "  StatusRawValue: " + strconv.Itoa(statusRawValue) + "  StatusMapValue: " + strconv.Itoa(statusMapValue) + "  StatusLay1Value: " + strconv.Itoa(statusLay1Value) + "  Timestamp: " + timestampFS + " | "
 					//  DB Insert
 					if len(lastStatusRawValueResult) == 0 {
-						machineRawDataCollection.Insert(&map[string]interface{}{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "ManualEvent": 0})
+						machineRawDataCollection.Insert(&map[string]interface{}{"Timestamp": timestamp, "_id": _id, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Paramater_id": paramater_id, "ManualEvent": 0})
 					} else {
 						if lastStatusRawValueResult["Timestamp"] != timestamp {
-							machineRawDataCollection.Update(bson.M{"_id": lastStatusRawValueResult["_id"]}, bson.M{"$set": bson.M{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value}})
+							machineRawDataCollection.Update(bson.M{"_id": lastStatusRawValueResult["_id"]}, bson.M{"$set": bson.M{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Paramater_id": paramater_id}})
 						}
 					}
 				} else {
