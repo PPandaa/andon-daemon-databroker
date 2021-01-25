@@ -2,6 +2,7 @@ package desk
 
 import (
 	"bytes"
+	"databroker/config"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -14,7 +15,6 @@ import (
 
 // GetTopology initial 時 拿一次 Enabler  Group Topology
 func GetTopology(db *mgo.Database) {
-	fmt.Println(Token, "=>  Topo Activation")
 	grouptopologyCollection := db.C("iii.cfg.GroupTopology")
 
 	httpClient := &http.Client{}
@@ -22,8 +22,8 @@ func GetTopology(db *mgo.Database) {
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
 		"query": "query groupsWithInboundConnector {   groups {     _id     id     name     parentId     timeZone     inboundConnector {       id       __typename        }             __typename   } }",
 	})
-	request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("cookie", Token)
+	request, _ := http.NewRequest("POST", "https://ifp-organizer-tienkang-eks002.sa.wise-paas.com/graphql", bytes.NewBuffer(httpRequestBody))
+	request.Header.Set("cookie", config.Token)
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
 	m, _ := simplejson.NewFromReader(response.Body)

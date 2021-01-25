@@ -4,7 +4,7 @@ metadata:
   name: andon-daemon-databroker
 spec:
   rules:
-  - host: databroker.ifactoryandondev.eks005.en.internal
+  - host: databroker.tienkang.eks005.en.internal
     http:
       paths:
       - backend:

@@ -1,8 +1,8 @@
 package db
 
 import (
+	"databroker/config"
 	"fmt"
-	"os"
 
 	"github.com/golang/glog"
 	. "github.com/logrusorgru/aurora"
@@ -10,26 +10,13 @@ import (
 )
 
 var (
-	mongodb_url      string
-	mongodb_database string
-	mongodb_username string
-	mongodb_password string
-
 	//public mongo connection
 	MongoDB *mongoDB
 )
 
 func StartMongo() {
-	mongodb_url = os.Getenv("MONGODB_URL")
-	mongodb_database = os.Getenv("MONGODB_DATABASE")
-	mongodb_username = os.Getenv("MONGODB_USERNAME")
-	mongodb_password = os.Getenv("MONGODB_PASSWORD")
 	MongoDB = NewMongo()
 	fmt.Println(BrightRed("StartMongo..."))
-	fmt.Println(BrightRed(mongodb_url))
-	fmt.Println(BrightRed(mongodb_database))
-	fmt.Println(BrightRed(mongodb_username))
-	fmt.Println(BrightRed(mongodb_password))
 }
 
 type mongoDB struct {
@@ -44,7 +31,7 @@ func NewMongo() *mongoDB {
 
 func CreateConnection() *mgo.Database {
 	glog.Infoln("create mongodb connection...")
-	session, err := mgo.Dial(mongodb_url)
+	session, err := mgo.Dial(config.MongodbURL)
 
 	if err != nil {
 		panic(err)
@@ -53,8 +40,8 @@ func CreateConnection() *mgo.Database {
 	// Optional. Switch the session to a monotonic behavior.
 	session.SetMode(mgo.Monotonic, true)
 
-	db := session.DB(mongodb_database)
-	err = db.Login(mongodb_username, mongodb_password)
+	db := session.DB(config.MongodbDatabase)
+	err = db.Login(config.MongodbUsername, config.MongodbPassword)
 	if err != nil {
 		panic(err)
 	}

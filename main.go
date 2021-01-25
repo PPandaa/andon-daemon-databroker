@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"databroker/config"
 	"databroker/db"
 	"databroker/pkg/desk"
 	"databroker/routers"
@@ -18,40 +19,35 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-const (
-	envName = "dev.env"
-)
-
 var taipeiTimeZone, utcTimeZone *time.Location
-var mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase, adminUsername, adminPassword, ssoURL string
 
 func initGlobalVar() {
 	taipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
 	utcTimeZone, _ = time.LoadLocation("UTC")
-	err := godotenv.Load(envName)
+	err := godotenv.Load(config.EnvName)
 	if err != nil {
 		log.Fatalf("Error loading env file")
 	}
-	adminUsername = os.Getenv("ADMIN_USERNAME")
-	adminPassword = os.Getenv("ADMIN_PASSWORD")
-	ssoURL = os.Getenv("SSO_URL")
-	mongodbURL = os.Getenv("MONGODB_URL")
-	mongodbUsername = os.Getenv("MONGODB_USERNAME")
-	mongodbPassword = os.Getenv("MONGODB_PASSWORD")
-	mongodbDatabase = os.Getenv("MONGODB_DATABASE")
-	fmt.Println("MongoDB ->", " URL:", mongodbURL, " Database:", mongodbDatabase)
+	config.AdminUsername = os.Getenv("ADMIN_USERNAME")
+	config.AdminPassword = os.Getenv("ADMIN_PASSWORD")
+	config.MongodbURL = os.Getenv("MONGODB_URL")
+	config.MongodbUsername = os.Getenv("MONGODB_USERNAME")
+	config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
+	config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
+	fmt.Println("MongoDB ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 }
 
 func refreshToken() {
 	for {
 		httpClient := &http.Client{}
-		content := map[string]string{"username": adminUsername, "password": adminPassword}
+		content := map[string]string{"username": config.AdminUsername, "password": config.AdminPassword}
 		variable := map[string]interface{}{"input": content}
 		httpRequestBody, _ := json.Marshal(map[string]interface{}{
 			"query":     "mutation signIn($input: SignInInput!) {   signIn(input: $input) {     user {       name       __typename     }     __typename   } }",
 			"variables": variable,
 		})
-		request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
+		// request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
+		request, _ := http.NewRequest("POST", "https://ifp-organizer-tienkang-eks002.sa.wise-paas.com/graphql", bytes.NewBuffer(httpRequestBody))
 		request.Header.Set("Content-Type", "application/json")
 		response, _ := httpClient.Do(request)
 		// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
@@ -64,7 +60,7 @@ func refreshToken() {
 		tempSplit = strings.Split(cookie[1], ";")
 		eiToken := tempSplit[0]
 		desk.Token = ifpToken + ";" + eiToken
-		fmt.Println(time.Now().In(taipeiTimeZone), "=>  Refresh Token ->", desk.Token)
+		fmt.Println(time.Now().In(taipeiTimeZone), "=>  Refresh Token ->", config.Token)
 		time.Sleep(60 * time.Minute)
 	}
 }
@@ -72,9 +68,9 @@ func refreshToken() {
 //BrokerStarter ...
 func BrokerStarter() {
 	fmt.Println(time.Now().In(taipeiTimeZone), "=>  Broker Activation")
-	session, _ := mgo.Dial(mongodbURL)
-	db := session.DB(mongodbDatabase)
-	db.Login(mongodbUsername, mongodbPassword)
+	session, _ := mgo.Dial(config.MongodbURL)
+	db := session.DB(config.MongodbDatabase)
+	db.Login(config.MongodbUsername, config.MongodbPassword)
 	for {
 		var nowTime time.Time
 		nowTime = time.Now().In(taipeiTimeZone)
@@ -97,9 +93,9 @@ func BrokerStarter() {
 //TopoStarter ...
 func TopoStarter() {
 	fmt.Println(time.Now().In(taipeiTimeZone), "=>  Topo Activation")
-	session, _ := mgo.Dial(mongodbURL)
-	db := session.DB(mongodbDatabase)
-	db.Login(mongodbUsername, mongodbPassword)
+	session, _ := mgo.Dial(config.MongodbURL)
+	db := session.DB(config.MongodbDatabase)
+	db.Login(config.MongodbUsername, config.MongodbPassword)
 	time.Sleep(5 * time.Second)
 	desk.GetTopology(db)
 }

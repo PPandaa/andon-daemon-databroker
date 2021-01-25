@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: andon-daemon-databroker
-        image: iiicondor/andon-daemon-databroker:dev
+        image: iiicondor/andon-daemon-databroker:tienkang
         imagePullPolicy: Always
         resources:
           requests:
