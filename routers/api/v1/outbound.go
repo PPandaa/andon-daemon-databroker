@@ -37,6 +37,16 @@ func PostOutbound_wadata(c *gin.Context) {
 	if err == nil {
 		glog.Info("---wadata inserted---")
 	}
+
+	//------------
+
+	//add 1/25
+	var wadata model.Wadata
+	if err := json.Unmarshal(body, &wadata); err != nil {
+		glog.Error(err)
+	}
+	// fmt.Printf("%+v", wadata)
+	wadata.Service("status")
 }
 
 func PostOutbound_waconn(c *gin.Context) {
