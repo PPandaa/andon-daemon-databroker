@@ -19,21 +19,21 @@ import (
 	"gopkg.in/mgo.v2"
 )
 
-var taipeiTimeZone, utcTimeZone *time.Location
-
 func initGlobalVar() {
-	taipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
-	utcTimeZone, _ = time.LoadLocation("UTC")
+	config.TaipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
+	config.UTCTimeZone, _ = time.LoadLocation("UTC")
 	err := godotenv.Load(config.EnvName)
 	if err != nil {
 		log.Fatalf("Error loading env file")
 	}
+	config.IFPURL = os.Getenv("IFP_URL")
 	config.AdminUsername = os.Getenv("ADMIN_USERNAME")
 	config.AdminPassword = os.Getenv("ADMIN_PASSWORD")
 	config.MongodbURL = os.Getenv("MONGODB_URL")
 	config.MongodbUsername = os.Getenv("MONGODB_USERNAME")
 	config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
 	config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
+	fmt.Println("IFP ->", " URL:", config.IFPURL, " Username:", config.AdminUsername)
 	fmt.Println("MongoDB ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 }
 
@@ -46,8 +46,7 @@ func refreshToken() {
 			"query":     "mutation signIn($input: SignInInput!) {   signIn(input: $input) {     user {       name       __typename     }     __typename   } }",
 			"variables": variable,
 		})
-		// request, _ := http.NewRequest("POST", "https://ifp-organizer-training-eks011.hz.wise-paas.com.cn/graphql", bytes.NewBuffer(httpRequestBody))
-		request, _ := http.NewRequest("POST", "https://ifp-organizer-tienkang-eks002.sa.wise-paas.com/graphql", bytes.NewBuffer(httpRequestBody))
+		request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
 		request.Header.Set("Content-Type", "application/json")
 		response, _ := httpClient.Do(request)
 		// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
@@ -60,44 +59,20 @@ func refreshToken() {
 		tempSplit = strings.Split(cookie[1], ";")
 		eiToken := tempSplit[0]
 		config.Token = ifpToken + ";" + eiToken
-		fmt.Println(time.Now().In(taipeiTimeZone), "=>  Refresh Token ->", config.Token)
+		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+		fmt.Println("refreshToken  =>  Token:", config.Token)
 		time.Sleep(60 * time.Minute)
-	}
-}
-
-//BrokerStarter ...
-func BrokerStarter() {
-	fmt.Println(time.Now().In(taipeiTimeZone), "=>  Broker Activation")
-	session, _ := mgo.Dial(config.MongodbURL)
-	db := session.DB(config.MongodbDatabase)
-	db.Login(config.MongodbUsername, config.MongodbPassword)
-	for {
-		var nowTime time.Time
-		nowTime = time.Now().In(taipeiTimeZone)
-		// if nowTime.Minute()%2 == 0 && nowTime.Second() == 0 {
-		// 	databroker.TransmitData(eiToken, nowTime, taipeiTimeZone, mongodbURL, mongodbUsername, mongodbPassword, mongodbDatabase)
-		// }
-		// --------- broker.go
-		// fmt.Println("-- TransmitData Start", time.Now().In(taipeiTimeZone))
-		desk.TransmitData(nowTime, db)
-		if nowTime.Minute() == 0 && nowTime.Second() <= 10 {
-			transmitDataEndtime := time.Now().In(taipeiTimeZone)
-			transmitDataExectime := transmitDataEndtime.Sub(nowTime)
-			fmt.Printf("%s =>  TransmitDataExecTime ->  %.1f Sec\n", nowTime, transmitDataExectime.Seconds())
-		}
-		// fmt.Println("-- TransmitData End", time.Now().In(taipeiTimeZone))
-		time.Sleep(1 * time.Second)
 	}
 }
 
 //TopoStarter ...
 func TopoStarter() {
-	fmt.Println(time.Now().In(taipeiTimeZone), "=>  Topo Activation")
 	session, _ := mgo.Dial(config.MongodbURL)
 	db := session.DB(config.MongodbDatabase)
 	db.Login(config.MongodbUsername, config.MongodbPassword)
 	time.Sleep(5 * time.Second)
 	desk.GetTopology(db)
+	session.Close()
 }
 
 var wg sync.WaitGroup
@@ -106,12 +81,11 @@ func main() {
 	wg.Add(3)
 	initGlobalVar()
 	go refreshToken()
-	go BrokerStarter()
+	time.Sleep(5 * time.Second)
 	TopoStarter()
 
 	//------------------------->
 	// v1.Test()
-
 	db.StartMongo()
 	router := routers.InitRouter()
 

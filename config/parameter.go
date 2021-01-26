@@ -1,11 +1,13 @@
 package config
 
+import "time"
+
 const (
 	EnvName = "tienkang.env"
 )
 
 var (
-	IFP_URL         string
+	IFPURL          string
 	MongodbURL      string
 	MongodbUsername string
 	MongodbPassword string
@@ -13,4 +15,6 @@ var (
 	AdminUsername   string
 	AdminPassword   string
 	Token           string
+	TaipeiTimeZone  *time.Location
+	UTCTimeZone     *time.Location
 )

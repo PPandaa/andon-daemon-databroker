@@ -1,9 +1,10 @@
 package model
 
 import (
-	"fmt"
 	"strings"
 	"time"
+
+	"databroker/pkg/desk"
 )
 
 type Ifpcfg struct {
@@ -78,11 +79,12 @@ type Wadata struct {
 func (w *Wadata) Service(key string) {
 	if val := w.D.Ifp.Val; val != nil {
 		m := val.(map[string]interface{})
-		for k, v := range m {
+		for k, _ := range m {
 			// fmt.Println(k, ":", v)
 			ss := strings.Split(k, "_")
 			if ss[0] == key {
-				fmt.Println("send status id and value[", ss[1], v, "] to peter func")
+				// fmt.Println("send status id and value[", ss[1], v, "] to peter func")
+				desk.UpdateMachineStatus(ss[1])
 			}
 		}
 	}
