@@ -15,6 +15,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/bitly/go-simplejson"
 	"github.com/joho/godotenv"
 	"gopkg.in/mgo.v2"
 )
@@ -39,6 +40,8 @@ func initGlobalVar() {
 
 func refreshToken() {
 	for {
+		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+		fmt.Println("refreshToken")
 		httpClient := &http.Client{}
 		content := map[string]string{"username": config.AdminUsername, "password": config.AdminPassword}
 		variable := map[string]interface{}{"input": content}
@@ -49,6 +52,21 @@ func refreshToken() {
 		request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
 		request.Header.Set("Content-Type", "application/json")
 		response, _ := httpClient.Do(request)
+		m, _ := simplejson.NewFromReader(response.Body)
+		for {
+			if len(m.Get("errors").MustArray()) == 0 {
+				break
+			} else {
+				httpRequestBody, _ = json.Marshal(map[string]interface{}{
+					"query":     "mutation signIn($input: SignInInput!) {   signIn(input: $input) {     user {       name       __typename     }     __typename   } }",
+					"variables": variable,
+				})
+				request, _ = http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
+				request.Header.Set("Content-Type", "application/json")
+				response, _ = httpClient.Do(request)
+				m, _ = simplejson.NewFromReader(response.Body)
+			}
+		}
 		// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
 		header := response.Header
 		// fmt.Println(header)
@@ -59,8 +77,7 @@ func refreshToken() {
 		tempSplit = strings.Split(cookie[1], ";")
 		eiToken := tempSplit[0]
 		config.Token = ifpToken + ";" + eiToken
-		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-		fmt.Println("refreshToken  =>  Token:", config.Token)
+		fmt.Println("Token:", config.Token)
 		time.Sleep(60 * time.Minute)
 	}
 }
@@ -73,6 +90,7 @@ func TopoStarter() {
 	time.Sleep(5 * time.Second)
 	desk.GetTopology(db)
 	session.Close()
+	desk.MachineRawDataTable("init")
 }
 
 var wg sync.WaitGroup
@@ -81,7 +99,7 @@ func main() {
 	wg.Add(3)
 	initGlobalVar()
 	go refreshToken()
-	time.Sleep(5 * time.Second)
+	time.Sleep(10 * time.Second)
 	TopoStarter()
 
 	//------------------------->

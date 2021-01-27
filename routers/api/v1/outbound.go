@@ -128,10 +128,12 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 		} else {
 			// 如果 machine items > 0
 			// 拿到 simpleJsonBody group _id (可能有多個)
-			//for i := 0; i < len(simpleJsonBody.Get("group").Get("items").MustArray()); i++ {
-			//	groupid := simpleJsonBody.Get("group").Get("items").GetIndex(i).Get("id").MustString()
-			//  將 groupid 傳給 peter borker func 去打GQL 拿該GROUP 底下的所有資料
-			//}
+			for i := 0; i < len(simpleJsonBody.Get("group").Get("items").MustArray()); i++ {
+				groupid := simpleJsonBody.Get("group").Get("items").GetIndex(i).Get("id").MustString()
+				//  將 groupid 傳給 peter borker func 去打GQL 拿該GROUP 底下的所有資料
+				desk.MachineRawDataTable("group", groupid)
+			}
+
 		}
 	}
 
