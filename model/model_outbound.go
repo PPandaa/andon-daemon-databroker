@@ -82,7 +82,7 @@ func (w *Wadata) Service(key string) {
 		for k, _ := range m {
 			// fmt.Println(k, ":", v)
 			ss := strings.Split(k, "_")
-			if ss[0] == key && len(ss) < 2 {
+			if ss[0] == key && len(ss) <= 2 {
 				// fmt.Println("send status id and value[", ss[1], v, "] to peter func")
 				desk.UpdateMachineStatus(ss[1])
 			}
