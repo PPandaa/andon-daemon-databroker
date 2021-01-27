@@ -103,9 +103,12 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 	}
 	if simpleJsonBody.Get("parameter").Get("removed") != nil {
 		for i := 0; i < len(simpleJsonBody.Get("parameter").Get("removed").MustArray()); i++ {
-			parameterid := simpleJsonBody.Get("parameter").Get("removed").GetIndex(i).Get("id").MustString()
-			query := bson.M{"Paramater_id": parameterid}
-			msg := bson.M{"StatusRawValue": 9, "StatusLay1Value": 9000, "StatusMapValue": 9000}
+			StatusID := simpleJsonBody.Get("parameter").Get("removed").GetIndex(i).Get("id").MustString()
+			// 已經確認上面2行是對的
+			// Yoga 請幫我改 [iii.dae.MachineRawData] 中 StatusID[key] = StatusID[上方的StatusID]
+			// 將StatusRawValue StatusLay1Value StatusMapValue 改為空值 其他欄位不能動到
+			query := bson.M{"StatusID": StatusID}
+			msg := bson.M{"StatusRawValue": nil, "StatusLay1Value": nil, "StatusMapValue": nil}
 			db.Upadte(db.MachineRawData, query, msg)
 		}
 	}
