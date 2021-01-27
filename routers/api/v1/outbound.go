@@ -14,7 +14,8 @@ import (
 	"github.com/bitly/go-simplejson"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
-	. "github.com/logrusorgru/aurora"
+
+	// . "github.com/logrusorgru/aurora"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -22,11 +23,11 @@ import (
 //由於目前對方發送過來的post body內容無法預測規則性，因此收到後先全部存db
 
 func PostOutbound_wadata(c *gin.Context) {
-	sourceId := c.Param("sourceId") //取得URL中参数
-	fmt.Println(BrightBlue("------------------wadata-------------------"), sourceId)
+	// sourceId := c.Param("sourceId") //取得URL中参数
+	// fmt.Println(BrightBlue("------------------wadata-------------------"), sourceId)
 
 	body, _ := ioutil.ReadAll(c.Request.Body)
-	fmt.Println(BrightBlue(string(body)))
+	// fmt.Println(BrightBlue(string(body)))
 
 	var v interface{}
 	if err := json.Unmarshal(body, &v); err != nil {
@@ -51,11 +52,11 @@ func PostOutbound_wadata(c *gin.Context) {
 }
 
 func PostOutbound_waconn(c *gin.Context) {
-	sourceId := c.Param("sourceId") //取得URL中参数
-	fmt.Println(BrightBlue("------------------waconn-------------------"), sourceId)
+	// sourceId := c.Param("sourceId") //取得URL中参数
+	// fmt.Println(BrightBlue("------------------waconn-------------------"), sourceId)
 
 	body, _ := ioutil.ReadAll(c.Request.Body)
-	fmt.Println(BrightBlue(string(body)))
+	// fmt.Println(BrightBlue(string(body)))
 
 	var v interface{}
 	if err := json.Unmarshal(body, &v); err != nil {
@@ -69,11 +70,11 @@ func PostOutbound_waconn(c *gin.Context) {
 }
 
 func PostOutbound_ifpcfg(c *gin.Context) {
-	sourceId := c.Param("sourceId") //取得URL中参数
-	fmt.Println(BrightBlue("------------------ifpcfg-------------------"), sourceId)
+	// sourceId := c.Param("sourceId") //取得URL中参数
+	// fmt.Println(BrightBlue("------------------ifpcfg-------------------"), sourceId)
 
 	body, _ := ioutil.ReadAll(c.Request.Body)
-	fmt.Println(BrightBlue(string(body)))
+	// fmt.Println(BrightBlue(string(body)))
 
 	var v interface{}
 	if err := json.Unmarshal(body, &v); err != nil {
@@ -150,11 +151,11 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 }
 
 func PostOutbound_wacfg(c *gin.Context) {
-	sourceId := c.Param("sourceId") //取得URL中参数
-	fmt.Println(BrightBlue("------------------wacfg-------------------"), sourceId)
+	// sourceId := c.Param("sourceId") //取得URL中参数
+	// fmt.Println(BrightBlue("------------------wacfg-------------------"), sourceId)
 
 	body, _ := ioutil.ReadAll(c.Request.Body)
-	fmt.Println(BrightBlue(string(body)))
+	// fmt.Println(BrightBlue(string(body)))
 
 	var v interface{}
 	if err := json.Unmarshal(body, &v); err != nil {
