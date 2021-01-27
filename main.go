@@ -87,6 +87,17 @@ func main() {
 	//------------------------->
 	// v1.Test()
 	db.StartMongo()
+
+	// test mongo------------------->
+	// query := bson.M{"StatusID": 123}
+	// query := bson.M{"MachineName": "test0115"}
+	// value := bson.M{"$set": bson.M{
+	// 	"StatusRawValue":  nil,
+	// 	"StatusLay1Value": nil,
+	// 	"StatusMapValue":  nil,
+	// }}
+	// db.Upadte(db.MachineRawData, query, value)
+
 	router := routers.InitRouter()
 
 	s := &http.Server{

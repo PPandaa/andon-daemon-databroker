@@ -99,6 +99,7 @@ func Insert(collection string, v interface{}) error {
 
 func Upadte(collection string, query, v interface{}) error {
 	c := MongoDB.UseCollection(collection)
+
 	err := c.Update(query, v)
 	if err != nil {
 		glog.Error(err)

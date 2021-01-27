@@ -33,14 +33,15 @@ func PostOutbound_wadata(c *gin.Context) {
 		glog.Error(err)
 	}
 
-	err := db.Insert(db.Wadata, v)
-	if err == nil {
-		glog.Info("---wadata inserted---")
-	}
+	// 1/26 取消存入db
+	// err := db.Insert(db.Wadata, v)
+	// if err == nil {
+	// 	glog.Info("---wadata inserted---")
+	// }
 
 	//------------
 
-	//add 1/25
+	// 1/25新增
 	var wadata model.Wadata
 	if err := json.Unmarshal(body, &wadata); err != nil {
 		glog.Error(err)
@@ -104,12 +105,13 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 	if simpleJsonBody.Get("parameter").Get("removed") != nil {
 		for i := 0; i < len(simpleJsonBody.Get("parameter").Get("removed").MustArray()); i++ {
 			StatusID := simpleJsonBody.Get("parameter").Get("removed").GetIndex(i).Get("id").MustString()
-			// 已經確認上面2行是對的
-			// Yoga 請幫我改 [iii.dae.MachineRawData] 中 StatusID[key] = StatusID[上方的StatusID]
-			// 將StatusRawValue StatusLay1Value StatusMapValue 改為空值 其他欄位不能動到
 			query := bson.M{"StatusID": StatusID}
-			msg := bson.M{"StatusRawValue": nil, "StatusLay1Value": nil, "StatusMapValue": nil}
-			db.Upadte(db.MachineRawData, query, msg)
+			value := bson.M{"$set": bson.M{
+				"StatusRawValue":  nil,
+				"StatusLay1Value": nil,
+				"StatusMapValue":  nil,
+			}}
+			db.Upadte(db.MachineRawData, query, value)
 		}
 	}
 
