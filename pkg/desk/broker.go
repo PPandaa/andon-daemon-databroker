@@ -26,6 +26,8 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 	db.Login(config.MongodbUsername, config.MongodbPassword)
 	groupTopoCollection := db.C("iii.cfg.GroupTopology")
 	machineRawDataCollection := db.C("iii.dae.MachineRawData")
+	machineRawDataHistCollection := db.C("iii.dae.MachineRawDataHist")
+
 	if mode == "init" {
 		var groupTopoResults []map[string]interface{}
 		groupTopoCollection.Find(bson.M{}).All(&groupTopoResults)
@@ -65,8 +67,10 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 				machineID := machinesLayer.GetIndex(indexOfMachines).Get("id").MustString()
 				machineName := machinesLayer.GetIndex(indexOfMachines).Get("name").MustString()
 				fmt.Println("  MachineUnderID:", machineUnderID, "  MachineID:", machineID, " MachineName:", machineName)
+
 				var machineRawDataResult map[string]interface{}
 				machineRawDataCollection.Find(bson.M{"MachineID": machineID}).One(&machineRawDataResult)
+
 				machineStatusRequestBody, _ := json.Marshal(map[string]interface{}{
 					"query": "query bigbang($machineID: ID!) { 	machine(id:$machineID){     _id     id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         mappingCode{           code           message           status{             index             layer1{               index               name             }           }         }         time       }     }   } }",
 					"variables": map[string]string{"machineID": machineID},
@@ -77,6 +81,7 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 				machineStatusResponse, _ := httpClient.Do(machineStatusRequest)
 				machineLayerWithStatus, _ := simplejson.NewFromReader(machineStatusResponse.Body)
 				// fmt.Println(statusRes)
+
 				if len(machineLayerWithStatus.Get("errors").MustArray()) == 0 {
 					paraString := "    ParaName: "
 					paramaterLayer := machineLayerWithStatus.Get("data").Get("machine").Get("parameterByName")
@@ -90,11 +95,23 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 					statusMapValue := paramaterLayer.Get("lastValue").Get("mappingCode").Get("status").Get("index").MustInt()
 					statusLay1Value := paramaterLayer.Get("lastValue").Get("mappingCode").Get("status").Get("layer1").Get("index").MustInt()
 					paraString += paraName + "  StatusID: " + statusID + "  StatusRawValue: " + strconv.Itoa(statusRawValue) + "  StatusMapValue: " + strconv.Itoa(statusMapValue) + "  StatusLay1Value: " + strconv.Itoa(statusLay1Value) + "  Timestamp: " + timestampFS + " | "
+
+					var machineRawDataHistResult map[string]interface{}
+					machineRawDataHistCollection.Find(bson.M{"MachineID": machineID}).Sort("-Timestamp").One(&machineRawDataHistResult)
+					if len(machineRawDataHistResult) != 0 {
+						if machineRawDataHistResult["StatusLay1Value"].(int) != statusLay1Value {
+							machineRawDataHistCollection.Insert(&map[string]interface{}{"GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Timestamp": timestamp})
+						}
+					} else {
+						machineRawDataHistCollection.Insert(&map[string]interface{}{"GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Timestamp": timestamp})
+					}
+
 					if len(machineRawDataResult) != 0 {
 						machineRawDataCollection.Update(bson.M{"_id": machineRawDataResult["_id"]}, bson.M{"$set": bson.M{"GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusID": statusID, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Timestamp": timestamp}})
 					} else {
 						machineRawDataCollection.Insert(&map[string]interface{}{"_id": machineUnderID, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusID": statusID, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "ManualEvent": 0, "Timestamp": timestamp})
 					}
+
 					fmt.Println(paraString)
 				} else {
 					if len(machineRawDataResult) != 0 {
@@ -121,6 +138,7 @@ func UpdateMachineStatus(StatusID string) {
 	db := session.DB(config.MongodbDatabase)
 	db.Login(config.MongodbUsername, config.MongodbPassword)
 	machineRawDataCollection := db.C("iii.dae.MachineRawData")
+	machineRawDataHistCollection := db.C("iii.dae.MachineRawDataHist")
 	// startTime := time.Now().In(config.TaipeiTimeZone)
 
 	var machineRawDataResult map[string]interface{}
@@ -161,6 +179,7 @@ func UpdateMachineStatus(StatusID string) {
 						statusLay1Value := paramaterLayer.Get("lastValue").Get("mappingCode").Get("status").Get("layer1").Get("index").MustInt()
 						paraString += paraName + "  StatusRawValue: " + strconv.Itoa(statusRawValue) + "  StatusMapValue: " + strconv.Itoa(statusMapValue) + "  StatusLay1Value: " + strconv.Itoa(statusLay1Value) + "  Timestamp: " + timestampFS + " | "
 						machineRawDataCollection.Update(bson.M{"_id": machineRawDataResult["_id"]}, bson.M{"$set": bson.M{"Timestamp": timestamp, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value}})
+						machineRawDataHistCollection.Insert(&map[string]interface{}{"GroupID": machineRawDataResult["GroupID"], "GroupName": machineRawDataResult["GroupName"], "MachineID": machineRawDataResult["MachineID"], "MachineName": machineRawDataResult["MachineName"], "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Timestamp": timestamp})
 					}
 					fmt.Println(paraString)
 				} else {
