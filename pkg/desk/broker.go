@@ -67,7 +67,6 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 				fmt.Println("  MachineUnderID:", machineUnderID, "  MachineID:", machineID, " MachineName:", machineName)
 				var machineRawDataResult map[string]interface{}
 				machineRawDataCollection.Find(bson.M{"MachineID": machineID}).One(&machineRawDataResult)
-
 				machineStatusRequestBody, _ := json.Marshal(map[string]interface{}{
 					"query": "query bigbang($machineID: ID!) { 	machine(id:$machineID){     _id     id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         mappingCode{           code           message           status{             index             layer1{               index               name             }           }         }         time       }     }   } }",
 					"variables": map[string]string{"machineID": machineID},
@@ -169,35 +168,6 @@ func UpdateMachineStatus(StatusID string) {
 					// paraString += paraName + "  ParaValue: " + strconv.Itoa(paraValue) + "  Timestamp: " + timestampFS + " | "
 				}
 			}
-
-			// paramaterLayer := machinesLayer.GetIndex(indexOfMachines).Get("parameters").Get("nodes")
-			// for indexOfParamater := 0; indexOfParamater < len(paramaterLayer.MustArray()); indexOfParamater++ {
-			// 	paraName := paramaterLayer.GetIndex(indexOfParamater).Get("name").MustString()
-			// 	paraUpdateTime := paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("time").MustString()
-			// 	timestampFS := strings.Replace(paraUpdateTime, "Z", "+00:00", 1)
-			// 	timestamp, _ := time.Parse(time.RFC3339, timestampFS)
-			// 	if paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("mappingCode").Get("code").MustString() != "" {
-			// 	if paramaterLayer.GetIndex(indexOfParamater).Get("name").MustString() == "status" {
-			// 		var lastStatusRawValueResult map[string]interface{}
-			// 		machineRawDataCollection.Pipe([]bson.M{{"$match": bson.M{"MachineID": machineID}}, {"$sort": bson.M{"ts": -1}}}).One(&lastStatusRawValueResult)
-			// 		fmt.Println(lastStatusRawValueResult)
-			// 		statusRawValue := paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("num").MustInt()
-			// 		statusMapValue := paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("mappingCode").Get("status").Get("index").MustInt()
-			// 		statusLay1Value := paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("mappingCode").Get("status").Get("layer1").Get("index").MustInt()
-			// 		paraString += paraName + "  StatusRawValue: " + strconv.Itoa(statusRawValue) + "  StatusMapValue: " + strconv.Itoa(statusMapValue) + "  StatusLay1Value: " + strconv.Itoa(statusLay1Value) + "  Timestamp: " + timestampFS + " | "
-			// 		if len(lastStatusRawValueResult) == 0 {
-			// 			machineRawDataCollection.Insert(&map[string]interface{}{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value})
-			// 		} else {
-			// 			if lastStatusRawValueResult["Timestamp"] != timestamp {
-			// 				machineRawDataCollection.Update(bson.M{"_id": lastStatusRawValueResult["_id"]}, bson.M{"$set": bson.M{"Timestamp": timestamp, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value}})
-			// 			}
-			// 		}
-			// 	} else {
-			// 		// paraValue := paramaterLayer.GetIndex(indexOfParamater).Get("lastValue").Get("num").MustInt()
-			// 		// paraString += paraName + "  ParaValue: " + strconv.Itoa(paraValue) + "  Timestamp: " + timestampFS + " | "
-			// 	}
-			// }
-			// fmt.Println(paraString)
 			// endtime := time.Now().In(config.TaipeiTimeZone)
 			// exectime := endtime.Sub(startTime)
 			// fmt.Printf("%s =>  UpdateMachineRaw ->  %.1f Sec\n", time.Now().In(config.TaipeiTimeZone), exectime.Seconds())
