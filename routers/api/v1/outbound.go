@@ -63,10 +63,10 @@ func PostOutbound_waconn(c *gin.Context) {
 		glog.Error(err)
 	}
 
-	err := db.Insert(db.Waconn, v)
-	if err == nil {
-		glog.Info("---waconn inserted---")
-	}
+	// err := db.Insert(db.Waconn, v)
+	// if err == nil {
+	// 	glog.Info("---waconn inserted---")
+	// }
 }
 
 func PostOutbound_ifpcfg(c *gin.Context) {
@@ -162,10 +162,10 @@ func PostOutbound_wacfg(c *gin.Context) {
 		glog.Error(err)
 	}
 
-	err := db.Insert(db.Wacfg, v)
-	if err == nil {
-		glog.Info("---wacfg inserted---")
-	}
+	// err := db.Insert(db.Wacfg, v)
+	// if err == nil {
+	// 	glog.Info("---wacfg inserted---")
+	// }
 }
 
 func JustForTest() {
