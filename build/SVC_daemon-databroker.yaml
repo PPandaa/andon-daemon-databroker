@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: andon-daemon-databroker
+  name: ifps-andon-daemon-databroker
 spec:
   ports:
   - name: http
@@ -9,7 +9,7 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    run: andon-daemon-databroker
+    run: ifps-andon-daemon-databroker
   sessionAffinity: None
   type: ClusterIP
 status:

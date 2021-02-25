@@ -11,22 +11,28 @@ import (
 	"time"
 
 	"github.com/bitly/go-simplejson"
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
+func dbHealthCheck() {
+	err := config.Session.Ping()
+	if err != nil {
+		fmt.Println("MongoDB", err, "->", "URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
+		config.Session.Refresh()
+	}
+}
+
 //MachineRawDataTable ...
 func MachineRawDataTable(mode string, groupUnderID ...string) {
+	dbHealthCheck()
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("MachineRawDataTable => Mode:", mode, "GroupUnderID:", groupUnderID)
 	var groupIDs []string
 	httpClient := &http.Client{}
-	session, _ := mgo.Dial(config.MongodbURL)
-	db := session.DB(config.MongodbDatabase)
-	db.Login(config.MongodbUsername, config.MongodbPassword)
-	groupTopoCollection := db.C("iii.cfg.GroupTopology")
-	machineRawDataCollection := db.C("iii.dae.MachineRawData")
-	machineRawDataHistCollection := db.C("iii.dae.MachineRawDataHist")
+
+	groupTopoCollection := config.DB.C("iii.cfg.GroupTopology")
+	machineRawDataCollection := config.DB.C("iii.dae.MachineRawData")
+	machineRawDataHistCollection := config.DB.C("iii.dae.MachineRawDataHist")
 
 	if mode == "init" {
 		var groupTopoResults []map[string]interface{}
@@ -96,6 +102,12 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 					statusLay1Value := paramaterLayer.Get("lastValue").Get("mappingCode").Get("status").Get("layer1").Get("index").MustInt()
 					paraString += paraName + "  StatusID: " + statusID + "  StatusRawValue: " + strconv.Itoa(statusRawValue) + "  StatusMapValue: " + strconv.Itoa(statusMapValue) + "  StatusLay1Value: " + strconv.Itoa(statusLay1Value) + "  Timestamp: " + timestampFS + " | "
 
+					if len(machineRawDataResult) != 0 {
+						machineRawDataCollection.Update(bson.M{"_id": machineRawDataResult["_id"]}, bson.M{"$set": bson.M{"GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusID": statusID, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Timestamp": timestamp}})
+					} else {
+						machineRawDataCollection.Insert(&map[string]interface{}{"_id": machineUnderID, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusID": statusID, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "ManualEvent": 0, "Timestamp": timestamp})
+					}
+
 					var machineRawDataHistResult map[string]interface{}
 					machineRawDataHistCollection.Find(bson.M{"MachineID": machineID}).Sort("-Timestamp").One(&machineRawDataHistResult)
 					if len(machineRawDataHistResult) != 0 {
@@ -104,12 +116,6 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 						}
 					} else {
 						machineRawDataHistCollection.Insert(&map[string]interface{}{"GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Timestamp": timestamp})
-					}
-
-					if len(machineRawDataResult) != 0 {
-						machineRawDataCollection.Update(bson.M{"_id": machineRawDataResult["_id"]}, bson.M{"$set": bson.M{"GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusID": statusID, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "Timestamp": timestamp}})
-					} else {
-						machineRawDataCollection.Insert(&map[string]interface{}{"_id": machineUnderID, "GroupID": groupID, "GroupName": groupName, "MachineID": machineID, "MachineName": machineName, "StatusID": statusID, "StatusRawValue": statusRawValue, "StatusMapValue": statusMapValue, "StatusLay1Value": statusLay1Value, "ManualEvent": 0, "Timestamp": timestamp})
 					}
 
 					fmt.Println(paraString)
@@ -125,20 +131,18 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 	} else {
 		fmt.Println(time.Now().In(config.TaipeiTimeZone), "=>  InitMachineRawDataTable ->  GraphQL Error ->", m.Get("errors").GetIndex(0).Get("message").MustString())
 	}
-	session.Close()
 }
 
 //UpdateMachineStatus ...
 func UpdateMachineStatus(StatusID string) {
+	dbHealthCheck()
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("UpdateMachineRaw  =>  StatusID:", StatusID)
 	var machineIDs []string
 	httpClient := &http.Client{}
-	session, _ := mgo.Dial(config.MongodbURL)
-	db := session.DB(config.MongodbDatabase)
-	db.Login(config.MongodbUsername, config.MongodbPassword)
-	machineRawDataCollection := db.C("iii.dae.MachineRawData")
-	machineRawDataHistCollection := db.C("iii.dae.MachineRawDataHist")
+
+	machineRawDataCollection := config.DB.C("iii.dae.MachineRawData")
+	machineRawDataHistCollection := config.DB.C("iii.dae.MachineRawDataHist")
 	// startTime := time.Now().In(config.TaipeiTimeZone)
 
 	var machineRawDataResult map[string]interface{}
@@ -194,5 +198,4 @@ func UpdateMachineStatus(StatusID string) {
 			fmt.Println(time.Now().In(config.TaipeiTimeZone), "=>  UpdateMachineRaw ->  GraphQL Error ->", m.Get("errors").GetIndex(0).Get("message").MustString())
 		}
 	}
-	session.Close()
 }
