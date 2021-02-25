@@ -63,6 +63,7 @@ func PostOutbound_waconn(c *gin.Context) {
 		glog.Error(err)
 	}
 
+	// 1/26 取消存入db
 	// err := db.Insert(db.Waconn, v)
 	// if err == nil {
 	// 	glog.Info("---waconn inserted---")
@@ -81,10 +82,11 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 		glog.Error(err)
 	}
 
-	err := db.Insert(db.Ifpcfg, v)
-	if err == nil {
-		glog.Info("---ifpcg inserted---")
-	}
+	// 1/26 取消存入db
+	// err := db.Insert(db.Ifpcfg, v)
+	// if err == nil {
+	// 	glog.Info("---ifpcg inserted---")
+	// }
 
 	simpleJsonBody, _ := simplejson.NewJson(body)
 
@@ -162,6 +164,7 @@ func PostOutbound_wacfg(c *gin.Context) {
 		glog.Error(err)
 	}
 
+	// 1/26 取消存入db
 	// err := db.Insert(db.Wacfg, v)
 	// if err == nil {
 	// 	glog.Info("---wacfg inserted---")
