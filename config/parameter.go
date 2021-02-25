@@ -1,9 +1,13 @@
 package config
 
-import "time"
+import (
+	"time"
+
+	"gopkg.in/mgo.v2"
+)
 
 const (
-	EnvName = "tienkang.env"
+	EnvName = "local.env"
 )
 
 var (
@@ -17,4 +21,7 @@ var (
 	Token           string
 	TaipeiTimeZone  *time.Location
 	UTCTimeZone     *time.Location
+
+	DB      *mgo.Database
+	Session *mgo.Session
 )

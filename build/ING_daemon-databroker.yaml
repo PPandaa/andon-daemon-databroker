@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: andon-daemon-databroker
+  name: ifps-andon-daemon-databroker
 spec:
   rules:
-  - host: databroker.tienkang.eks005.en.internal
+  - host: ifps-andon-daemon-databroker.tienkang.eks002.en.internal
     http:
       paths:
       - backend:
-          serviceName: andon-daemon-databroker
+          serviceName: ifps-andon-daemon-databroker
           servicePort: 8080
         path: /

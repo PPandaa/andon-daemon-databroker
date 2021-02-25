@@ -35,6 +35,15 @@ func initGlobalVar() {
 	config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
 	config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
 	fmt.Println("IFP ->", " URL:", config.IFPURL, " Username:", config.AdminUsername)
+
+	newSession, err := mgo.Dial(config.MongodbURL)
+	for err != nil {
+		fmt.Println("MongoDB", err, "->", "URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
+		newSession, err = mgo.Dial(config.MongodbURL)
+	}
+	config.Session = newSession
+	config.DB = config.Session.DB(config.MongodbDatabase)
+	config.DB.Login(config.MongodbUsername, config.MongodbPassword)
 	fmt.Println("MongoDB ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 }
 
@@ -84,12 +93,7 @@ func refreshToken() {
 
 //TopoStarter ...
 func TopoStarter() {
-	session, _ := mgo.Dial(config.MongodbURL)
-	db := session.DB(config.MongodbDatabase)
-	db.Login(config.MongodbUsername, config.MongodbPassword)
-	time.Sleep(5 * time.Second)
-	desk.GetTopology(db)
-	session.Close()
+	desk.GetTopology(config.DB)
 	desk.MachineRawDataTable("init")
 }
 

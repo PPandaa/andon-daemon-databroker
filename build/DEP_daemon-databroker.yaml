@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: andon-daemon-databroker
+  name: ifps-andon-daemon-databroker
 spec:
   selector:
     matchLabels:
-      run: andon-daemon-databroker
+      run: ifps-andon-daemon-databroker
   replicas: 1
   template:
     metadata:
       labels:
-        run: andon-daemon-databroker
+        run: ifps-andon-daemon-databroker
     spec:
       containers:
-      - name: andon-daemon-databroker
-        image: iiicondor/andon-daemon-databroker:tienkang
+      - name: ifps-andon-daemon-databroker
+        image: iiicondor/andon-daemon-databroker:tienkang-eks002
         imagePullPolicy: Always
         resources:
           requests:
