@@ -109,6 +109,7 @@ func main() {
 	//------------------------->
 	// v1.Test()
 	db.StartMongo()
+	go db.MongoHealCheckLoop()
 
 	// test mongo------------------->
 	// query := bson.M{"StatusID": 123}

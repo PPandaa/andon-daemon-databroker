@@ -3,6 +3,7 @@ package db
 import (
 	"databroker/config"
 	"fmt"
+	"time"
 
 	"github.com/golang/glog"
 	. "github.com/logrusorgru/aurora"
@@ -17,6 +18,23 @@ var (
 func StartMongo() {
 	MongoDB = NewMongo()
 	fmt.Println(BrightRed("StartMongo..."))
+}
+
+func MongoHealCheckLoop() {
+	d := time.Second * time.Duration(60)
+
+	check := func() {
+		s := MongoDB.Db.Session
+		if err := s.Ping(); err != nil {
+			glog.Error("MongoHealCheckLoop Err:", err)
+			MongoDB = NewMongo()
+		}
+	}
+
+	for {
+		check()
+		time.Sleep(d)
+	}
 }
 
 type mongoDB struct {
