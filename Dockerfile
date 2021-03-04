@@ -11,6 +11,4 @@ WORKDIR /go/
 COPY --from=build /go/main .
 COPY *.env ./
 
-EXPOSE 8080
-
 CMD ["./main"]

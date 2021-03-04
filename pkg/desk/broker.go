@@ -17,8 +17,11 @@ import (
 func dbHealthCheck() {
 	err := config.Session.Ping()
 	if err != nil {
+		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 		fmt.Println("MongoDB", err, "->", "URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 		config.Session.Refresh()
+		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+		fmt.Println("MongoDB Reconnect ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 	}
 }
 
@@ -78,15 +81,15 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 				machineRawDataCollection.Find(bson.M{"MachineID": machineID}).One(&machineRawDataResult)
 
 				machineStatusRequestBody, _ := json.Marshal(map[string]interface{}{
-					"query": "query bigbang($machineID: ID!) { 	machine(id:$machineID){     _id     id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         mappingCode{           code           message           status{             index             layer1{               index               name             }           }         }         time       }     }   } }",
-					"variables": map[string]string{"machineID": machineID},
+					"query":     "query bigbang($machineId: ID!) {   machine(id: $machineId) {     id     _id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         ... on TagValue {          mappingCode {           code           message           status{             index             layer1{               index               name             }           }         }         }         time       }     }   } }",
+					"variables": map[string]string{"machineId": machineID},
 				})
 				machineStatusRequest, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(machineStatusRequestBody))
 				machineStatusRequest.Header.Set("cookie", config.Token)
 				machineStatusRequest.Header.Set("Content-Type", "application/json")
 				machineStatusResponse, _ := httpClient.Do(machineStatusRequest)
 				machineLayerWithStatus, _ := simplejson.NewFromReader(machineStatusResponse.Body)
-				// fmt.Println(statusRes)
+				// fmt.Println(machineLayerWithStatus)
 
 				if len(machineLayerWithStatus.Get("errors").MustArray()) == 0 {
 					paraString := "    ParaName: "
@@ -152,8 +155,8 @@ func UpdateMachineStatus(StatusID string) {
 		machineIDs = append(machineIDs, machineRawDataResult["MachineID"].(string))
 
 		httpRequestBody, _ := json.Marshal(map[string]interface{}{
-			"query":     "query bigbang($machineID: [ID!]!) {   machinesByIds(ids:$machineID){     _id     id     name     parameterByName(name:\"status\"){       id       name       lastValue{         num         mappingCode{           code           message           status{             index             layer1{               index               name             }           }         }         time       }     }   } }",
-			"variables": map[string][]string{"machineID": machineIDs},
+			"query":     "query bigbang($machineId: [ID!]!) {   machinesByIds(ids: $machineId) {     id     _id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         ... on TagValue {          mappingCode {           code           message           status{             index             layer1{               index               name             }           }         }         }         time       }     }   } }",
+			"variables": map[string][]string{"machineId": machineIDs},
 		})
 		request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
 		request.Header.Set("cookie", config.Token)

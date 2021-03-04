@@ -21,8 +21,6 @@ import (
 )
 
 func initGlobalVar() {
-	config.TaipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
-	config.UTCTimeZone, _ = time.LoadLocation("UTC")
 	err := godotenv.Load(config.EnvName)
 	if err != nil {
 		log.Fatalf("Error loading env file")
@@ -34,17 +32,24 @@ func initGlobalVar() {
 	config.MongodbUsername = os.Getenv("MONGODB_USERNAME")
 	config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
 	config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
+	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("IFP ->", " URL:", config.IFPURL, " Username:", config.AdminUsername)
+	fmt.Println("MongoDB ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 
 	newSession, err := mgo.Dial(config.MongodbURL)
-	for err != nil {
-		fmt.Println("MongoDB", err, "->", "URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
-		newSession, err = mgo.Dial(config.MongodbURL)
+	if err != nil {
+		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+		fmt.Println("MongoDB", err)
+		for err != nil {
+			newSession, err = mgo.Dial(config.MongodbURL)
+			time.Sleep(5 * time.Second)
+		}
 	}
 	config.Session = newSession
 	config.DB = config.Session.DB(config.MongodbDatabase)
 	config.DB.Login(config.MongodbUsername, config.MongodbPassword)
-	fmt.Println("MongoDB ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
+	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+	fmt.Println("MongoDB Connect")
 }
 
 func refreshToken() {
@@ -66,6 +71,8 @@ func refreshToken() {
 			if len(m.Get("errors").MustArray()) == 0 {
 				break
 			} else {
+				fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+				fmt.Println("retry refreshToken")
 				httpRequestBody, _ = json.Marshal(map[string]interface{}{
 					"query":     "mutation signIn($input: SignInInput!) {   signIn(input: $input) {     user {       name       __typename     }     __typename   } }",
 					"variables": variable,
@@ -74,6 +81,7 @@ func refreshToken() {
 				request.Header.Set("Content-Type", "application/json")
 				response, _ = httpClient.Do(request)
 				m, _ = simplejson.NewFromReader(response.Body)
+				time.Sleep(6 * time.Minute)
 			}
 		}
 		// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
@@ -81,11 +89,20 @@ func refreshToken() {
 		// fmt.Println(header)
 		// m, _ := simplejson.NewFromReader(response.Header)
 		cookie := header["Set-Cookie"]
-		tempSplit := strings.Split(cookie[0], ";")
-		ifpToken := tempSplit[0]
-		tempSplit = strings.Split(cookie[1], ";")
-		eiToken := tempSplit[0]
-		config.Token = ifpToken + ";" + eiToken
+		var ifpToken, eiToken string
+		for _, cookieContent := range cookie {
+			tempSplit := strings.Split(cookieContent, ";")
+			if strings.HasPrefix(tempSplit[0], "IFPToken") {
+				ifpToken = tempSplit[0]
+			} else if strings.HasPrefix(tempSplit[0], "EIToken") {
+				eiToken = tempSplit[0]
+			}
+		}
+		if eiToken == "" {
+			config.Token = ifpToken
+		} else {
+			config.Token = ifpToken + ";" + eiToken
+		}
 		fmt.Println("Token:", config.Token)
 		time.Sleep(60 * time.Minute)
 	}
