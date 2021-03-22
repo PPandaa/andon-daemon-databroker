@@ -7,7 +7,8 @@ docker build -t $DOCKER_REPO:$VERSION .
 docker push $DOCKER_REPO:$VERSION
 docker tag $DOCKER_REPO:$VERSION $DOCKER_REPO:dev
 docker push $DOCKER_REPO:dev
-echo "[`date "+%Y-%m-%d %H:%M:%S"`] $VERSION => dev" >> ImageInfo.txt
+MESSAGE="change -> "
+echo "[`date "+%Y-%m-%d %H:%M:%S"`] $VERSION => dev {$MESSAGE}" >> ImageInfo.txt
 
 # docker pull $DOCKER_REPO:$VERSION
 # docker tag $DOCKER_REPO:$VERSION $DOCKER_REPO:demo

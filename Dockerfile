@@ -1,6 +1,6 @@
 FROM golang:1.13-buster as build
 
-WORKDIR /go/src/daemon-databroker
+WORKDIR /go/src/ifps-andon-daemon-databroker
 ADD . .
 
 RUN go mod download

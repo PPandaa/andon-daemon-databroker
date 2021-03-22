@@ -34,12 +34,11 @@ func initGlobalVar() {
 	config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("IFP ->", " URL:", config.IFPURL, " Username:", config.AdminUsername)
-	fmt.Println("MongoDB ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 
 	newSession, err := mgo.Dial(config.MongodbURL)
 	if err != nil {
 		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-		fmt.Println("MongoDB", err)
+		fmt.Println("MongoDB", err, "->", "URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 		for err != nil {
 			newSession, err = mgo.Dial(config.MongodbURL)
 			time.Sleep(5 * time.Second)
@@ -49,7 +48,7 @@ func initGlobalVar() {
 	config.DB = config.Session.DB(config.MongodbDatabase)
 	config.DB.Login(config.MongodbUsername, config.MongodbPassword)
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-	fmt.Println("MongoDB Connect")
+	fmt.Println("MongoDB Connect ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 }
 
 func refreshToken() {
