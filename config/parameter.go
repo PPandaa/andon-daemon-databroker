@@ -1,13 +1,14 @@
 package config
 
 import (
+	"fmt"
 	"time"
 
 	"gopkg.in/mgo.v2"
 )
 
 const (
-	EnvName = "local.env"
+	EnvName = "ifps-dev.env"
 )
 
 var (
@@ -25,3 +26,14 @@ var (
 	DB      *mgo.Database
 	Session *mgo.Session
 )
+
+func DbHealthCheck() {
+	err := Session.Ping()
+	if err != nil {
+		fmt.Println("----------", time.Now().In(TaipeiTimeZone), "----------")
+		fmt.Println("MongoDB", err, "->", "URL:", MongodbURL, " Database:", MongodbDatabase)
+		Session.Refresh()
+		fmt.Println("----------", time.Now().In(TaipeiTimeZone), "----------")
+		fmt.Println("MongoDB Reconnect ->", " URL:", MongodbURL, " Database:", MongodbDatabase)
+	}
+}

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"databroker/config"
-	"databroker/db"
 	"databroker/pkg/desk"
 	"databroker/routers"
 	"encoding/json"
@@ -83,10 +82,7 @@ func refreshToken() {
 				time.Sleep(6 * time.Minute)
 			}
 		}
-		// fmt.Println("-- GraphQL API End", time.Now().In(taipeiTimeZone))
 		header := response.Header
-		// fmt.Println(header)
-		// m, _ := simplejson.NewFromReader(response.Header)
 		cookie := header["Set-Cookie"]
 		var ifpToken, eiToken string
 		for _, cookieContent := range cookie {
@@ -116,35 +112,17 @@ func TopoStarter() {
 var wg sync.WaitGroup
 
 func main() {
-	wg.Add(3)
+	wg.Add(1)
+
 	initGlobalVar()
 	go refreshToken()
 	time.Sleep(10 * time.Second)
 	TopoStarter()
 
-	//------------------------->
-	// v1.Test()
-	db.StartMongo()
-	go db.MongoHealCheckLoop()
-
-	// test mongo------------------->
-	// query := bson.M{"StatusID": 123}
-	// query := bson.M{"MachineName": "test0115"}
-	// value := bson.M{"$set": bson.M{
-	// 	"StatusRawValue":  nil,
-	// 	"StatusLay1Value": nil,
-	// 	"StatusMapValue":  nil,
-	// }}
-	// db.Upadte(db.MachineRawData, query, value)
-
 	router := routers.InitRouter()
-
 	s := &http.Server{
 		Addr:    fmt.Sprintf(":%d", 8080),
 		Handler: router,
-		// ReadTimeout:    ReadTimeout,
-		// WriteTimeout:   WriteTimeout,
-		// MaxHeaderBytes: 1 << 20,
 	}
 	s.ListenAndServe()
 	wg.Wait()

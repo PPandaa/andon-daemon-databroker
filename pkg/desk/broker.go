@@ -14,20 +14,9 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func dbHealthCheck() {
-	err := config.Session.Ping()
-	if err != nil {
-		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-		fmt.Println("MongoDB", err, "->", "URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
-		config.Session.Refresh()
-		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-		fmt.Println("MongoDB Reconnect ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
-	}
-}
-
 //MachineRawDataTable ...
 func MachineRawDataTable(mode string, groupUnderID ...string) {
-	dbHealthCheck()
+	config.DbHealthCheck()
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("MachineRawDataTable => Mode:", mode, "GroupUnderID:", groupUnderID)
 	var groupIDs []string
@@ -138,7 +127,7 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 
 //UpdateMachineStatus ...
 func UpdateMachineStatus(StatusID string) {
-	dbHealthCheck()
+	config.DbHealthCheck()
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("UpdateMachineRaw  =>  StatusID:", StatusID)
 	var machineIDs []string

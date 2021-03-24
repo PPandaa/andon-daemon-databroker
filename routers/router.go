@@ -13,9 +13,6 @@ func InitRouter() *gin.Engine {
 
 	r.Use(gin.Recovery())
 
-	// gin.SetMode(setting.RunMode)
-
-	//----------------->
 	apiv1 := r.Group("/")
 	{
 		apiv1.GET("/", func(c *gin.Context) {
