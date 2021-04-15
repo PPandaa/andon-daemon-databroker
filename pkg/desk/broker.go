@@ -22,9 +22,9 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 	var groupIDs []string
 	httpClient := &http.Client{}
 
-	groupTopoCollection := config.DB.C("iii.cfg.GroupTopology")
-	machineRawDataCollection := config.DB.C("iii.dae.MachineRawData")
-	machineRawDataHistCollection := config.DB.C("iii.dae.MachineRawDataHist")
+	groupTopoCollection := config.DB.C(config.GroupTopo)
+	machineRawDataCollection := config.DB.C(config.MachineRawData)
+	machineRawDataHistCollection := config.DB.C(config.MachineRawDataHist)
 
 	if mode == "init" {
 		var groupTopoResults []map[string]interface{}
@@ -42,7 +42,7 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 	// fmt.Println(groupIDs)
 
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
-		"query":     "query bigbang($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     _id     name     timeZone     machines {       _id       id       name     }   } }",
+		"query":     "query ($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     _id     name     timeZone     machines {       _id       id       name     }   } }",
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
 	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
@@ -70,7 +70,7 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 				machineRawDataCollection.Find(bson.M{"MachineID": machineID}).One(&machineRawDataResult)
 
 				machineStatusRequestBody, _ := json.Marshal(map[string]interface{}{
-					"query":     "query bigbang($machineId: ID!) {   machine(id: $machineId) {     id     _id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         ... on TagValue {          mappingCode {           code           message           status{             index             layer1{               index               name             }           }         }         }         time       }     }   } }",
+					"query":     "query ($machineId: ID!) {   machine(id: $machineId) {     id     _id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         ... on TagValue {          mappingCode {           code           message           status{             index             layer1{               index               name             }           }         }         }         time       }     }   } }",
 					"variables": map[string]string{"machineId": machineID},
 				})
 				machineStatusRequest, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(machineStatusRequestBody))
@@ -121,7 +121,72 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 			}
 		}
 	} else {
-		fmt.Println(time.Now().In(config.TaipeiTimeZone), "=>  InitMachineRawDataTable ->  GraphQL Error ->", m.Get("errors").GetIndex(0).Get("message").MustString())
+		fmt.Println(time.Now().In(config.TaipeiTimeZone), "=>  MachineRawDataTable ->  GraphQL Error ->", m.Get("errors").GetIndex(0).Get("message").MustString())
+	}
+}
+
+//StationRawDataTable
+func StationRawDataTable(mode string, groupUnderID ...string) {
+	config.DbHealthCheck()
+	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+	fmt.Println("StationRawDataTable => Mode:", mode, "GroupUnderID:", groupUnderID)
+	var groupIDs []string
+	httpClient := &http.Client{}
+
+	groupTopoCollection := config.DB.C(config.GroupTopo)
+	stationRawDataCollection := config.DB.C(config.StationRawData)
+
+	if mode == "init" {
+		var groupTopoResults []map[string]interface{}
+		groupTopoCollection.Find(bson.M{}).All(&groupTopoResults)
+		if len(groupTopoResults) != 0 {
+			for _, groupTopoResult := range groupTopoResults {
+				groupIDs = append(groupIDs, groupTopoResult["GroupID"].(string))
+			}
+		}
+	} else {
+		var groupTopoResults map[string]interface{}
+		groupTopoCollection.Find(bson.M{"_id": groupUnderID[0]}).One(&groupTopoResults)
+		groupIDs = append(groupIDs, groupTopoResults["GroupID"].(string))
+	}
+	// fmt.Println(groupIDs)
+
+	httpRequestBody, _ := json.Marshal(map[string]interface{}{
+		"query":     "query ($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     _id     name     timeZone     machines(isStation: true) {       _id       id       name     }   } }",
+		"variables": map[string][]string{"groupId": groupIDs},
+	})
+	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
+	request.Header.Set("cookie", config.Token)
+	request.Header.Set("Content-Type", "application/json")
+	response, _ := httpClient.Do(request)
+	m, _ := simplejson.NewFromReader(response.Body)
+	// fmt.Println(m)
+
+	if len(m.Get("errors").MustArray()) == 0 {
+		groupsLayer := m.Get("data").Get("groupsByIds")
+		for indexOfGroups := 0; indexOfGroups < len(groupsLayer.MustArray()); indexOfGroups++ {
+			groupID := groupsLayer.GetIndex(indexOfGroups).Get("id").MustString()
+			groupName := groupsLayer.GetIndex(indexOfGroups).Get("name").MustString()
+			fmt.Println("GroupID:", groupID, " GroupName:", groupName)
+			machinesLayer := groupsLayer.GetIndex(indexOfGroups).Get("machines")
+			// fmt.Println(machinesLayer)
+			for indexOfMachines := 0; indexOfMachines < len(machinesLayer.MustArray()); indexOfMachines++ {
+				stationUnderID := machinesLayer.GetIndex(indexOfMachines).Get("_id").MustString()
+				stationID := machinesLayer.GetIndex(indexOfMachines).Get("id").MustString()
+				stationName := machinesLayer.GetIndex(indexOfMachines).Get("name").MustString()
+				fmt.Println("  StationUnderID:", stationUnderID, "  StationID:", stationID, " StationName:", stationName)
+
+				var stationRawDataResult map[string]interface{}
+				stationRawDataCollection.Find(bson.M{"StationID": stationID}).One(&stationRawDataResult)
+				if len(stationRawDataResult) != 0 {
+					stationRawDataCollection.Update(bson.M{"_id": stationRawDataResult["_id"]}, bson.M{"$set": bson.M{"GroupID": groupID, "GroupName": groupName, "StationID": stationID, "StationName": stationName}})
+				} else {
+					stationRawDataCollection.Insert(&map[string]interface{}{"_id": stationUnderID, "GroupID": groupID, "GroupName": groupName, "StationID": stationID, "StationName": stationName, "ManualEvent": 0})
+				}
+			}
+		}
+	} else {
+		fmt.Println(time.Now().In(config.TaipeiTimeZone), "=>  StationRawDataTable ->  GraphQL Error ->", m.Get("errors").GetIndex(0).Get("message").MustString())
 	}
 }
 
@@ -133,8 +198,8 @@ func UpdateMachineStatus(StatusID string) {
 	var machineIDs []string
 	httpClient := &http.Client{}
 
-	machineRawDataCollection := config.DB.C("iii.dae.MachineRawData")
-	machineRawDataHistCollection := config.DB.C("iii.dae.MachineRawDataHist")
+	machineRawDataCollection := config.DB.C(config.MachineRawData)
+	machineRawDataHistCollection := config.DB.C(config.MachineRawDataHist)
 	// startTime := time.Now().In(config.TaipeiTimeZone)
 
 	var machineRawDataResult map[string]interface{}

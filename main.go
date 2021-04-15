@@ -107,6 +107,7 @@ func refreshToken() {
 func TopoStarter() {
 	desk.GetTopology(config.DB)
 	desk.MachineRawDataTable("init")
+	desk.StationRawDataTable("init")
 }
 
 var wg sync.WaitGroup

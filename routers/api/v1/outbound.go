@@ -135,6 +135,7 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 				groupid := simpleJsonBody.Get("group").Get("items").GetIndex(i).Get("id").MustString()
 				//  將 groupid 傳給 peter borker func 去打GQL 拿該GROUP 底下的所有資料
 				desk.MachineRawDataTable("group", groupid)
+				desk.StationRawDataTable("group", groupid)
 			}
 
 		}
