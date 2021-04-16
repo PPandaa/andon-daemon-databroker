@@ -7,12 +7,13 @@ import (
 )
 
 func InitRouter() *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
+
 	r := gin.New()
 
 	r.Use(gin.Logger())
 
 	r.Use(gin.Recovery())
-
 	apiv1 := r.Group("/")
 	{
 		apiv1.GET("/", func(c *gin.Context) {

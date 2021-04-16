@@ -103,6 +103,7 @@ func PostOutbound_ifpcfg(c *gin.Context) {
 			removeid := simpleJsonBody.Get("machine").Get("removed").GetIndex(i).Get("id").MustString()
 			msg := bson.M{"_id": removeid}
 			db.Delete(db.MachineRawData, msg)
+			db.Delete(db.StationRawData, msg)
 		}
 	}
 	if simpleJsonBody.Get("parameter").Get("removed") != nil {

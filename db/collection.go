@@ -7,4 +7,5 @@ var (
 	Wacfg          = "iii.bound.wacfg"
 	Topo           = "iii.cfg.GroupTopology"
 	MachineRawData = "iii.dae.MachineRawData"
+	StationRawData = "iii.dae.StationRawData"
 )

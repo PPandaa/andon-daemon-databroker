@@ -7,7 +7,7 @@ docker build -t $DOCKER_REPO:$VERSION .
 docker push $DOCKER_REPO:$VERSION
 docker tag $DOCKER_REPO:$VERSION $DOCKER_REPO:dev
 docker push $DOCKER_REPO:dev
-MESSAGE="add StationRawDataTable"
+MESSAGE="add db.Delete(db.StationRawData, msg)"
 echo "[`date "+%Y-%m-%d %H:%M:%S"`] $VERSION => dev {$MESSAGE}" >> ImageInfo.txt
 
 # docker pull $DOCKER_REPO:$VERSION

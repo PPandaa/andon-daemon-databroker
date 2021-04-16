@@ -79,7 +79,7 @@ type Wadata struct {
 func (w *Wadata) Service(key string) {
 	if val := w.D.Ifp.Val; val != nil {
 		m := val.(map[string]interface{})
-		for k, _ := range m {
+		for k := range m {
 			// fmt.Println(k, ":", v)
 			ss := strings.Split(k, "_")
 			if ss[0] == key && len(ss) <= 2 {
