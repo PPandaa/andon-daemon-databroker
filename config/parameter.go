@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	EnvName = "local.env"
+	EnvPath = "local.env"
 
 	MachineRawData     = "iii.dae.MachineRawData"
 	StationRawData     = "iii.dae.StationRawData"
@@ -31,6 +31,7 @@ var (
 	MongodbDatabase   string
 	AdminUsername     string
 	AdminPassword     string
+	OutboundURL       string
 	Token             string
 	TaipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
 	UTCTimeZone, _    = time.LoadLocation("UTC")

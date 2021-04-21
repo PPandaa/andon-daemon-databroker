@@ -20,19 +20,21 @@ import (
 )
 
 func initGlobalVar() {
-	err := godotenv.Load(config.EnvName)
+	err := godotenv.Load(config.EnvPath)
 	if err != nil {
 		log.Fatalf("Error loading env file")
 	}
 	config.IFPURL = os.Getenv("IFP_URL")
 	config.AdminUsername = os.Getenv("ADMIN_USERNAME")
 	config.AdminPassword = os.Getenv("ADMIN_PASSWORD")
+	config.OutboundURL = os.Getenv("OUTBOUND_API_URL")
 	config.MongodbURL = os.Getenv("MONGODB_URL")
 	config.MongodbUsername = os.Getenv("MONGODB_USERNAME")
 	config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
 	config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-	fmt.Println("IFP ->", " URL:", config.IFPURL, " Username:", config.AdminUsername)
+	fmt.Println("IFP -> URL:", config.IFPURL, " Username:", config.AdminUsername)
+	fmt.Println("Outbound API -> URL:", config.OutboundURL)
 
 	newSession, err := mgo.Dial(config.MongodbURL)
 	if err != nil {
@@ -103,8 +105,30 @@ func refreshToken() {
 	}
 }
 
+func registerOutbound() {
+	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+	fmt.Println("registerOutbound")
+	httpClient := &http.Client{}
+	content := map[string]interface{}{"name": "ifps-andon", "sourceId": "scada_ifpsandon", "url": config.OutboundURL, "active": true}
+	variable := map[string]interface{}{"input": content}
+	httpRequestBody, _ := json.Marshal(map[string]interface{}{
+		"query":     "mutation ($input: AddOutboundInput!) {     addOutbound(input: $input) {         outbound {             id             name             url             sourceId             allowUnauthorized             active             connected         }     } }",
+		"variables": variable,
+	})
+	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
+	request.Header.Set("cookie", config.Token)
+	request.Header.Set("Content-Type", "application/json")
+	response, _ := httpClient.Do(request)
+	m, _ := simplejson.NewFromReader(response.Body)
+	if len(m.Get("errors").MustArray()) == 0 {
+		fmt.Println("Outbound ifps-andon:", config.OutboundURL)
+	} else {
+		fmt.Println("Outbound ifps-andon already exist")
+	}
+}
+
 //TopoStarter ...
-func TopoStarter() {
+func topoStarter() {
 	desk.GetTopology(config.DB)
 	desk.MachineRawDataTable("init")
 	desk.StationRawDataTable("init")
@@ -118,7 +142,8 @@ func main() {
 	initGlobalVar()
 	go refreshToken()
 	time.Sleep(10 * time.Second)
-	TopoStarter()
+	registerOutbound()
+	topoStarter()
 
 	router := routers.InitRouter()
 	s := &http.Server{
@@ -126,5 +151,6 @@ func main() {
 		Handler: router,
 	}
 	s.ListenAndServe()
+
 	wg.Wait()
 }
