@@ -24,14 +24,25 @@ func initGlobalVar() {
 	if err != nil {
 		log.Fatalf("Error loading env file")
 	}
-	config.IFPURL = os.Getenv("IFP_URL")
-	config.AdminUsername = os.Getenv("ADMIN_USERNAME")
-	config.AdminPassword = os.Getenv("ADMIN_PASSWORD")
-	config.OutboundURL = os.Getenv("OUTBOUND_API_URL")
-	config.MongodbURL = os.Getenv("MONGODB_URL")
-	config.MongodbUsername = os.Getenv("MONGODB_USERNAME")
-	config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
-	config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
+	config.IFPURL = os.Getenv("IFP_DESK_API_URL")
+	config.AdminUsername = os.Getenv("IFP_DESK_USERNAME")
+	config.AdminPassword = os.Getenv("IFP_DESK_PASSWORD")
+	config.OutboundURL = os.Getenv("IFPS_ANDON_DAEMON_DATABROKER_API_URL")
+	ensaasService := os.Getenv("ENSAAS_SERVICES")
+	if len(ensaasService) != 0 {
+		tempReader := strings.NewReader(ensaasService)
+		m, _ := simplejson.NewFromReader(tempReader)
+		mongodb := m.Get("mongodb").GetIndex(0).Get("credentials").MustMap()
+		config.MongodbURL = mongodb["externalHosts"].(string)
+		config.MongodbDatabase = mongodb["database"].(string)
+		config.MongodbUsername = mongodb["username"].(string)
+		config.MongodbPassword = mongodb["password"].(string)
+	} else {
+		config.MongodbURL = os.Getenv("MONGODB_URL")
+		config.MongodbDatabase = os.Getenv("MONGODB_DATABASE")
+		config.MongodbUsername = os.Getenv("MONGODB_USERNAME")
+		config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
+	}
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("IFP -> URL:", config.IFPURL, " Username:", config.AdminUsername)
 	fmt.Println("Outbound API -> URL:", config.OutboundURL)
