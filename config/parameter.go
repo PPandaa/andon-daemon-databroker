@@ -9,7 +9,6 @@ import (
 
 const (
 	EnvPath = "local.env"
-	// EnvPath = "C:/Users/SSI/Desktop/III/iFactory_Andon/Env/ifps-andon-marketplace.env"
 
 	MachineRawData     = "iii.dae.MachineRawData"
 	StationRawData     = "iii.dae.StationRawData"
