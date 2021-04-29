@@ -4,5 +4,9 @@
     "go.autocompleteUnimportedPackages": true,    
     "go.useCodeSnippetsOnFunctionSuggest": true,
     "go.useCodeSnippetsOnFunctionSuggestWithoutType": true,
+    "cSpell.words": [
+        "IFPS",
+        "ensaas"
+    ],
     
 }

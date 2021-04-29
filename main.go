@@ -24,10 +24,21 @@ func initGlobalVar() {
 	if err != nil {
 		log.Fatalf("Error loading env file")
 	}
+
+	datacenter := os.Getenv("datacenter")
+	cluster := os.Getenv("cluster")
+	namespace := os.Getenv("namespace")
 	config.IFPURL = os.Getenv("IFP_DESK_API_URL")
 	config.AdminUsername = os.Getenv("IFP_DESK_USERNAME")
 	config.AdminPassword = os.Getenv("IFP_DESK_PASSWORD")
-	config.OutboundURL = os.Getenv("IFPS_ANDON_DAEMON_DATABROKER_API_URL")
+
+	ifps_andon_daemon_databroker_api_url := os.Getenv("IFPS_ANDON_DAEMON_DATABROKER_API_URL")
+	if len(ifps_andon_daemon_databroker_api_url) != 0 {
+		config.OutboundURL = ifps_andon_daemon_databroker_api_url
+	} else {
+		config.OutboundURL = "https://ifps-andon-daemon-databroker-" + namespace + "-" + cluster + "." + datacenter + ".wise-paas.com"
+	}
+
 	ensaasService := os.Getenv("ENSAAS_SERVICES")
 	if len(ensaasService) != 0 {
 		tempReader := strings.NewReader(ensaasService)
@@ -43,6 +54,7 @@ func initGlobalVar() {
 		config.MongodbUsername = os.Getenv("MONGODB_USERNAME")
 		config.MongodbPassword = os.Getenv("MONGODB_PASSWORD")
 	}
+
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("IFP -> URL:", config.IFPURL, " Username:", config.AdminUsername)
 	fmt.Println("Outbound API -> URL:", config.OutboundURL)

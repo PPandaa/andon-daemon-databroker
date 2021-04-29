@@ -11,3 +11,4 @@
 [2021-04-16 13:54:21] 1.0.3 => dev {add db.Delete(db.StationRawData, msg)}
 [2021-04-21 15:56:04] 1.0.3 => dev {add registerOutbound()}
 [2021-04-28 18:12:04] 1.0.4 => dev {add -> use new design env}
+[2021-04-29 15:31:57] 1.0.4 => dev {change initGlobalVar}
