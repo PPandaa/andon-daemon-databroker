@@ -25,7 +25,6 @@ func initGlobalVar() {
 		log.Fatalf("Error loading env file")
 	}
 
-	datacenter := os.Getenv("datacenter")
 	cluster := os.Getenv("cluster")
 	namespace := os.Getenv("namespace")
 	external := os.Getenv("external")
@@ -34,7 +33,7 @@ func initGlobalVar() {
 	if len(ifps_desk_api_url) != 0 {
 		config.IFPURL = ifps_desk_api_url
 	} else {
-		config.IFPURL = "https://ifp-organizer-" + namespace + "-" + cluster + "." + datacenter + ".wise-paas.com/graphql"
+		config.IFPURL = "https://ifp-organizer-" + namespace + "-" + cluster + "." + external + "/graphql"
 	}
 
 	config.AdminUsername = os.Getenv("IFP_DESK_USERNAME")
