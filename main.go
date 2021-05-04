@@ -28,7 +28,15 @@ func initGlobalVar() {
 	datacenter := os.Getenv("datacenter")
 	cluster := os.Getenv("cluster")
 	namespace := os.Getenv("namespace")
-	config.IFPURL = os.Getenv("IFP_DESK_API_URL")
+	external := os.Getenv("external")
+
+	ifps_desk_api_url := os.Getenv("IFP_DESK_API_URL")
+	if len(ifps_desk_api_url) != 0 {
+		config.IFPURL = ifps_desk_api_url
+	} else {
+		config.IFPURL = "https://ifp-organizer-" + namespace + "-" + cluster + "." + datacenter + ".wise-paas.com/graphql"
+	}
+
 	config.AdminUsername = os.Getenv("IFP_DESK_USERNAME")
 	config.AdminPassword = os.Getenv("IFP_DESK_PASSWORD")
 
@@ -36,7 +44,7 @@ func initGlobalVar() {
 	if len(ifps_andon_daemon_databroker_api_url) != 0 {
 		config.OutboundURL = ifps_andon_daemon_databroker_api_url
 	} else {
-		config.OutboundURL = "https://ifps-andon-daemon-databroker-" + namespace + "-" + cluster + "." + datacenter + ".wise-paas.com"
+		config.OutboundURL = "https://ifps-andon-daemon-databroker-" + namespace + "-" + cluster + "." + external
 	}
 
 	ensaasService := os.Getenv("ENSAAS_SERVICES")
