@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/bitly/go-simplejson"
@@ -25,15 +24,22 @@ func initGlobalVar() {
 		log.Fatalf("Error loading env file")
 	}
 
-	cluster := os.Getenv("cluster")
-	namespace := os.Getenv("namespace")
+	config.Datacenter = os.Getenv("datacenter")
+	config.Workspace = os.Getenv("workspace")
+	config.Cluster = os.Getenv("cluster")
+	config.Namespace = os.Getenv("namespace")
+	if config.Namespace == "ifpsdev" || config.Namespace == "ifpsdemo" {
+		config.SSOURL = "https://api-sso-ensaas.hz.wise-paas.com.cn/v4.0"
+	} else {
+		config.SSOURL = os.Getenv("SSO_API_URL")
+	}
 	external := os.Getenv("external")
 
 	ifps_desk_api_url := os.Getenv("IFP_DESK_API_URL")
 	if len(ifps_desk_api_url) != 0 {
 		config.IFPURL = ifps_desk_api_url
 	} else {
-		config.IFPURL = "https://ifp-organizer-" + namespace + "-" + cluster + "." + external + "/graphql"
+		config.IFPURL = "https://ifp-organizer-" + config.Namespace + "-" + config.Cluster + "." + external + "/graphql"
 	}
 
 	config.AdminUsername = os.Getenv("IFP_DESK_USERNAME")
@@ -43,7 +49,7 @@ func initGlobalVar() {
 	if len(ifps_andon_daemon_databroker_api_url) != 0 {
 		config.OutboundURL = ifps_andon_daemon_databroker_api_url
 	} else {
-		config.OutboundURL = "https://ifps-andon-daemon-databroker-" + namespace + "-" + cluster + "." + external
+		config.OutboundURL = "https://ifps-andon-daemon-databroker-" + config.Namespace + "-" + config.Cluster + "." + external
 	}
 
 	ensaasService := os.Getenv("ENSAAS_SERVICES")
@@ -63,7 +69,8 @@ func initGlobalVar() {
 	}
 
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-	fmt.Println("IFP -> URL:", config.IFPURL, " Username:", config.AdminUsername)
+	fmt.Println("IFP -> URL:", config.IFPURL)
+	fmt.Println("SSO -> URL:", config.SSOURL)
 	fmt.Println("Outbound API -> URL:", config.OutboundURL)
 
 	newSession, err := mgo.Dial(config.MongodbURL)
@@ -82,59 +89,6 @@ func initGlobalVar() {
 	fmt.Println("MongoDB Connect ->", " URL:", config.MongodbURL, " Database:", config.MongodbDatabase)
 }
 
-func refreshToken() {
-	for {
-		fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-		fmt.Println("refreshToken")
-		httpClient := &http.Client{}
-		content := map[string]string{"username": config.AdminUsername, "password": config.AdminPassword}
-		variable := map[string]interface{}{"input": content}
-		httpRequestBody, _ := json.Marshal(map[string]interface{}{
-			"query":     "mutation signIn($input: SignInInput!) {   signIn(input: $input) {     user {       name       __typename     }     __typename   } }",
-			"variables": variable,
-		})
-		request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-		request.Header.Set("Content-Type", "application/json")
-		response, _ := httpClient.Do(request)
-		m, _ := simplejson.NewFromReader(response.Body)
-		for {
-			if len(m.Get("errors").MustArray()) == 0 {
-				break
-			} else {
-				fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
-				fmt.Println("retry refreshToken")
-				httpRequestBody, _ = json.Marshal(map[string]interface{}{
-					"query":     "mutation signIn($input: SignInInput!) {   signIn(input: $input) {     user {       name       __typename     }     __typename   } }",
-					"variables": variable,
-				})
-				request, _ = http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-				request.Header.Set("Content-Type", "application/json")
-				response, _ = httpClient.Do(request)
-				m, _ = simplejson.NewFromReader(response.Body)
-				time.Sleep(6 * time.Minute)
-			}
-		}
-		header := response.Header
-		cookie := header["Set-Cookie"]
-		var ifpToken, eiToken string
-		for _, cookieContent := range cookie {
-			tempSplit := strings.Split(cookieContent, ";")
-			if strings.HasPrefix(tempSplit[0], "IFPToken") {
-				ifpToken = tempSplit[0]
-			} else if strings.HasPrefix(tempSplit[0], "EIToken") {
-				eiToken = tempSplit[0]
-			}
-		}
-		if eiToken == "" {
-			config.Token = ifpToken
-		} else {
-			config.Token = ifpToken + ";" + eiToken
-		}
-		fmt.Println("Token:", config.Token)
-		time.Sleep(60 * time.Minute)
-	}
-}
-
 func registerOutbound() {
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println("registerOutbound")
@@ -146,9 +100,18 @@ func registerOutbound() {
 		"variables": variable,
 	})
 	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("cookie", config.Token)
+	if len(config.Datacenter) == 0 {
+		request.Header.Set("cookie", config.Token)
+	} else {
+		request.Header.Set("X-Ifp-App-Secret", config.Token)
+	}
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
+	if response.StatusCode == 200 {
+		config.IFPStatus = "Up"
+	} else {
+		config.IFPStatus = "Down"
+	}
 	m, _ := simplejson.NewFromReader(response.Body)
 	if len(m.Get("errors").MustArray()) == 0 {
 		fmt.Println("Outbound ifps-andon:", config.OutboundURL)
@@ -164,16 +127,16 @@ func topoStarter() {
 	desk.StationRawDataTable("init")
 }
 
-var wg sync.WaitGroup
+// var wg sync.WaitGroup
 
 func main() {
-	wg.Add(1)
+	// wg.Add(2)
 
 	initGlobalVar()
-	go refreshToken()
+	go desk.RefreshToken()
 	time.Sleep(10 * time.Second)
 	registerOutbound()
-	topoStarter()
+	go topoStarter()
 
 	router := routers.InitRouter()
 	s := &http.Server{
@@ -182,5 +145,5 @@ func main() {
 	}
 	s.ListenAndServe()
 
-	wg.Wait()
+	// wg.Wait()
 }

@@ -33,6 +33,12 @@ var (
 	AdminPassword     string
 	OutboundURL       string
 	Token             string
+	Datacenter        string
+	Cluster           string
+	Workspace         string
+	Namespace         string
+	SSOURL            string
+	IFPStatus         = "Down"
 	TaipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
 	UTCTimeZone, _    = time.LoadLocation("UTC")
 

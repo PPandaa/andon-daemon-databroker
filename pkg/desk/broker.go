@@ -46,7 +46,11 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
 	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("cookie", config.Token)
+	if len(config.Datacenter) == 0 {
+		request.Header.Set("cookie", config.Token)
+	} else {
+		request.Header.Set("X-Ifp-App-Secret", config.Token)
+	}
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
 	m, _ := simplejson.NewFromReader(response.Body)
@@ -74,7 +78,11 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 					"variables": map[string]string{"machineId": machineID},
 				})
 				machineStatusRequest, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(machineStatusRequestBody))
-				machineStatusRequest.Header.Set("cookie", config.Token)
+				if len(config.Datacenter) == 0 {
+					machineStatusRequest.Header.Set("cookie", config.Token)
+				} else {
+					machineStatusRequest.Header.Set("X-Ifp-App-Secret", config.Token)
+				}
 				machineStatusRequest.Header.Set("Content-Type", "application/json")
 				machineStatusResponse, _ := httpClient.Do(machineStatusRequest)
 				machineLayerWithStatus, _ := simplejson.NewFromReader(machineStatusResponse.Body)
@@ -156,7 +164,11 @@ func StationRawDataTable(mode string, groupUnderID ...string) {
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
 	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("cookie", config.Token)
+	if len(config.Datacenter) == 0 {
+		request.Header.Set("cookie", config.Token)
+	} else {
+		request.Header.Set("X-Ifp-App-Secret", config.Token)
+	}
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
 	m, _ := simplejson.NewFromReader(response.Body)
@@ -213,7 +225,11 @@ func UpdateMachineStatus(StatusID string) {
 			"variables": map[string][]string{"machineId": machineIDs},
 		})
 		request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-		request.Header.Set("cookie", config.Token)
+		if len(config.Datacenter) == 0 {
+			request.Header.Set("cookie", config.Token)
+		} else {
+			request.Header.Set("X-Ifp-App-Secret", config.Token)
+		}
 		request.Header.Set("Content-Type", "application/json")
 		response, _ := httpClient.Do(request)
 		m, _ := simplejson.NewFromReader(response.Body)

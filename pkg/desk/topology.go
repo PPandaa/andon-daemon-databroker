@@ -24,7 +24,11 @@ func GetTopology(db *mgo.Database) {
 		"query": "query groupsWithInboundConnector {   groups {     _id     id     name     parentId     timeZone     inboundConnector {       id       __typename        }             __typename   } }",
 	})
 	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-	request.Header.Set("cookie", config.Token)
+	if len(config.Datacenter) == 0 {
+		request.Header.Set("cookie", config.Token)
+	} else {
+		request.Header.Set("X-Ifp-App-Secret", config.Token)
+	}
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
 	m, _ := simplejson.NewFromReader(response.Body)
