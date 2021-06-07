@@ -29,6 +29,7 @@ var (
 	MongodbUsername   string
 	MongodbPassword   string
 	MongodbDatabase   string
+	MongodbAuthSource string
 	AdminUsername     string
 	AdminPassword     string
 	OutboundURL       string
