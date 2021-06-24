@@ -132,9 +132,57 @@ func registerOutbound() {
 	}
 	m, _ := simplejson.NewFromReader(response.Body)
 	if len(m.Get("errors").MustArray()) == 0 {
-		fmt.Println("Outbound ifps-andon:", config.OutboundURL)
+		fmt.Println("Register Outbound ifps-andon Success")
 	} else {
-		fmt.Println("Outbound ifps-andon already exist")
+		fmt.Println("Outbound ifps-andon is already exist")
+	}
+}
+
+func registerCommandCenter() {
+	isAppRegisterCommandCenter := false
+	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
+	fmt.Println("registerCommandCenter")
+	httpClient := &http.Client{}
+	httpRequestBody, _ := json.Marshal(map[string]interface{}{
+		"query": "query { iApps { name } }",
+	})
+	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
+	if len(config.Datacenter) == 0 {
+		request.Header.Set("cookie", config.Token)
+	} else {
+		request.Header.Set("X-Ifp-App-Secret", config.Token)
+	}
+	request.Header.Set("Content-Type", "application/json")
+	response, _ := httpClient.Do(request)
+	m, _ := simplejson.NewFromReader(response.Body)
+	for _, appName := range m.Get("data").Get("iApps").MustArray() {
+		if appName.(map[string]interface{})["name"] == "iFactory/Andon" {
+			isAppRegisterCommandCenter = true
+		}
+	}
+	if isAppRegisterCommandCenter {
+		fmt.Println("iApp iFactory/Andon is already exist")
+	} else {
+		content := map[string]interface{}{"name": "iFactory/Andon", "link": "https://dashboard-ifactory-eks005.sa.wise-paas.com/frame/Andon-Demo?orgId=1&language=en-US&theme=gray&refresh=5s", "iconUrl": "https://dashboard-ifactory-eks005.sa.wise-paas.com:443/api/images/getImage?imageId=17", "display": "Show"}
+		variable := map[string]interface{}{"iAppInput": content}
+		httpRequestBody, _ = json.Marshal(map[string]interface{}{
+			"query":     "mutation ($iAppInput: AddIAppInput!) { addIApp(input: $iAppInput) { iApp { name } } }",
+			"variables": variable,
+		})
+		request, _ = http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
+		if len(config.Datacenter) == 0 {
+			request.Header.Set("cookie", config.Token)
+		} else {
+			request.Header.Set("X-Ifp-App-Secret", config.Token)
+		}
+		request.Header.Set("Content-Type", "application/json")
+		response, _ = httpClient.Do(request)
+		m, _ = simplejson.NewFromReader(response.Body)
+		if len(m.Get("errors").MustArray()) == 0 {
+			fmt.Println("Register iApp iFactory/Andon Success")
+		} else {
+			fmt.Println("Register iApp iFactory/Andon Fail")
+		}
 	}
 }
 
@@ -154,6 +202,7 @@ func main() {
 	go desk.RefreshToken()
 	time.Sleep(10 * time.Second)
 	registerOutbound()
+	registerCommandCenter()
 	go topoStarter()
 
 	router := routers.InitRouter()
