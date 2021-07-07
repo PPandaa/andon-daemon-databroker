@@ -18,3 +18,4 @@
 [2021-06-07 14:30:16] 1.0.6 => dev {change initGlobalVar -> add MONGODB_AUTH_SOURCE MONGODB_PASSWORD_FILE}
 [2021-06-24 16:08:12] 1.0.7 => dev {add registerCommandCenter()}
 [2021-07-01 16:23:41] 1.0.7 => demo
+[2021-07-07 14:16:22] 1.0.8 => dev {add andon-init}

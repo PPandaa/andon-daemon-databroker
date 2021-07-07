@@ -23,11 +23,11 @@ func GetTopology(db *mgo.Database) {
 	httpRequestBody, _ := json.Marshal(map[string]interface{}{
 		"query": "query groupsWithInboundConnector {   groups {     _id     id     name     parentId     timeZone     inboundConnector {       id       __typename        }             __typename   } }",
 	})
-	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-	if len(config.Datacenter) == 0 {
-		request.Header.Set("cookie", config.Token)
+	request, _ := http.NewRequest("POST", config.IFP_DESK_API_URL.String(), bytes.NewBuffer(httpRequestBody))
+	if config.ServerLocation == "Cloud" {
+		request.Header.Set("X-Ifp-App-Secret", config.IFPToken)
 	} else {
-		request.Header.Set("X-Ifp-App-Secret", config.Token)
+		request.Header.Set("cookie", config.IFPToken)
 	}
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)

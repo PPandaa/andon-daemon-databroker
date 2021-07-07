@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"net/url"
 	"time"
 
 	"gopkg.in/mgo.v2"
@@ -24,24 +25,40 @@ const (
 )
 
 var (
-	IFPURL            string
+	TaipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
+	UTCTimeZone, _    = time.LoadLocation("UTC")
+	IFPStatus         = "Down"
+	ServiceName       = "Andon"
+
+	ServerLocation string
+	Datacenter     string
+	Cluster        string
+	Workspace      string
+	Namespace      string
+	External       string
+
+	SSO_API_URL       *url.URL
+	SSO_USERNAME      string
+	SSO_PASSWORD      string
+	DASHBOARD_API_URL *url.URL
+
+	IFP_DESK_API_URL  *url.URL
+	IFP_DESK_USERNAME string
+	IFP_DESK_PASSWORD string
+
+	IFPS_ANDON_UI_URL                    *url.URL
+	IFP_DESK_DATASOURCE_API_URL          *url.URL
+	IFPS_ANDON_DATASOURCE_API_URL        *url.URL
+	IFPS_ANDON_DAEMON_DATABROKER_API_URL *url.URL
+
 	MongodbURL        string
 	MongodbUsername   string
 	MongodbPassword   string
 	MongodbDatabase   string
 	MongodbAuthSource string
-	AdminUsername     string
-	AdminPassword     string
-	OutboundURL       string
-	Token             string
-	Datacenter        string
-	Cluster           string
-	Workspace         string
-	Namespace         string
-	SSOURL            string
-	IFPStatus         = "Down"
-	TaipeiTimeZone, _ = time.LoadLocation("Asia/Taipei")
-	UTCTimeZone, _    = time.LoadLocation("UTC")
+
+	DashboardToken string
+	IFPToken       string
 
 	DB      *mgo.Database
 	Session *mgo.Session

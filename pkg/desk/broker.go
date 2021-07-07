@@ -45,11 +45,11 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 		"query":     "query ($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     _id     name     timeZone     machines {       _id       id       name     }   } }",
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
-	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-	if len(config.Datacenter) == 0 {
-		request.Header.Set("cookie", config.Token)
+	request, _ := http.NewRequest("POST", config.IFP_DESK_API_URL.String(), bytes.NewBuffer(httpRequestBody))
+	if config.ServerLocation == "Cloud" {
+		request.Header.Set("X-Ifp-App-Secret", config.IFPToken)
 	} else {
-		request.Header.Set("X-Ifp-App-Secret", config.Token)
+		request.Header.Set("cookie", config.IFPToken)
 	}
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
@@ -77,11 +77,11 @@ func MachineRawDataTable(mode string, groupUnderID ...string) {
 					"query":     "query ($machineId: ID!) {   machine(id: $machineId) {     id     _id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         ... on TagValue {          mappingCode {           code           message           status{             index             layer1{               index               name             }           }         }         }         time       }     }   } }",
 					"variables": map[string]string{"machineId": machineID},
 				})
-				machineStatusRequest, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(machineStatusRequestBody))
-				if len(config.Datacenter) == 0 {
-					machineStatusRequest.Header.Set("cookie", config.Token)
+				machineStatusRequest, _ := http.NewRequest("POST", config.IFP_DESK_API_URL.String(), bytes.NewBuffer(machineStatusRequestBody))
+				if config.ServerLocation == "Cloud" {
+					request.Header.Set("X-Ifp-App-Secret", config.IFPToken)
 				} else {
-					machineStatusRequest.Header.Set("X-Ifp-App-Secret", config.Token)
+					request.Header.Set("cookie", config.IFPToken)
 				}
 				machineStatusRequest.Header.Set("Content-Type", "application/json")
 				machineStatusResponse, _ := httpClient.Do(machineStatusRequest)
@@ -163,11 +163,11 @@ func StationRawDataTable(mode string, groupUnderID ...string) {
 		"query":     "query ($groupId: [ID!]!) {   groupsByIds(ids: $groupId) {     id     _id     name     timeZone     machines(isStation: true) {       _id       id       name     }   } }",
 		"variables": map[string][]string{"groupId": groupIDs},
 	})
-	request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-	if len(config.Datacenter) == 0 {
-		request.Header.Set("cookie", config.Token)
+	request, _ := http.NewRequest("POST", config.IFP_DESK_API_URL.String(), bytes.NewBuffer(httpRequestBody))
+	if config.ServerLocation == "Cloud" {
+		request.Header.Set("X-Ifp-App-Secret", config.IFPToken)
 	} else {
-		request.Header.Set("X-Ifp-App-Secret", config.Token)
+		request.Header.Set("cookie", config.IFPToken)
 	}
 	request.Header.Set("Content-Type", "application/json")
 	response, _ := httpClient.Do(request)
@@ -224,11 +224,11 @@ func UpdateMachineStatus(StatusID string) {
 			"query":     "query bigbang($machineId: [ID!]!) {   machinesByIds(ids: $machineId) {     id     _id     name     parameterByName(name:\"status\"){       _id       id       name       lastValue{         num         ... on TagValue {          mappingCode {           code           message           status{             index             layer1{               index               name             }           }         }         }         time       }     }   } }",
 			"variables": map[string][]string{"machineId": machineIDs},
 		})
-		request, _ := http.NewRequest("POST", config.IFPURL, bytes.NewBuffer(httpRequestBody))
-		if len(config.Datacenter) == 0 {
-			request.Header.Set("cookie", config.Token)
+		request, _ := http.NewRequest("POST", config.IFP_DESK_API_URL.String(), bytes.NewBuffer(httpRequestBody))
+		if config.ServerLocation == "Cloud" {
+			request.Header.Set("X-Ifp-App-Secret", config.IFPToken)
 		} else {
-			request.Header.Set("X-Ifp-App-Secret", config.Token)
+			request.Header.Set("cookie", config.IFPToken)
 		}
 		request.Header.Set("Content-Type", "application/json")
 		response, _ := httpClient.Do(request)
