@@ -1,0 +1,3369 @@
+{
+    "dashboard": {
+        "__inputs": [
+            {
+                "name": "DS_ANDON",
+                "type": "datasource",
+                "pluginId": "ifps-andon-datasource",
+                "value": "Andon DataSource"
+            },
+            {
+                "name": "VAR_GROUPID",
+                "type": "constant",
+                "value": "-"
+            },
+            {
+                "name": "VAR_MAPURL",
+                "type": "constant",
+                "value": "-"
+            },
+            {
+                "name": "VAR_GROUPNAME",
+                "type": "constant",
+                "value": "-"
+            }
+        ],
+        "__requires": [
+            {
+                "type": "panel",
+                "id": "advantech-datatable-panel",
+                "name": "Advanced Datatable",
+                "version": "1.1.59"
+            },
+            {
+                "type": "panel",
+                "id": "advantech-indicator-panel",
+                "name": "indicator panel",
+                "version": "1.0.16"
+            },
+            {
+                "type": "grafana",
+                "id": "grafana",
+                "name": "Grafana",
+                "version": "3.0.11"
+            },
+            {
+                "type": "datasource",
+                "id": "ifps-andon-datasource",
+                "name": "Andon DataSource",
+                "version": "1.3.0"
+            },
+            {
+                "type": "panel",
+                "id": "ifps-andon-switch-panel",
+                "name": "Andon Switch Panel",
+                "version": "1.1.0"
+            },
+            {
+                "type": "panel",
+                "id": "text",
+                "name": "Text",
+                "version": ""
+            }
+        ],
+        "annotations": {
+            "list": [
+                {
+                    "builtIn": 1,
+                    "datasource": "-- Grafana --",
+                    "enable": true,
+                    "hide": true,
+                    "iconColor": "rgba(0, 211, 255, 1)",
+                    "name": "Annotations & Alerts",
+                    "type": "dashboard"
+                }
+            ]
+        },
+        "borderRadiusValue": "Default",
+        "borderShadowGradientData": "Default",
+        "dashboardPanelBorderColor": "",
+        "dashboardPanelBorderSquareRadiusColor": "",
+        "dashboardPanelBorderStyle": "",
+        "dashboardPanelBorderWidth": "",
+        "dashboardPanelColorScheme": "Default",
+        "dashboardPanelGradientColor": "",
+        "dashboardPanelPillarColor": "",
+        "dashboardPanelShadow": false,
+        "dashboardPanelTitleGradientColor": "",
+        "dashboardPanelTitleScheme": "Default",
+        "editable": true,
+        "gnetId": null,
+        "graphTooltip": 0,
+        "id": null,
+        "iteration": 1621926903223,
+        "linkOneLineShow": false,
+        "links": [],
+        "mobileAuto": false,
+        "mobileUpgraded": true,
+        "panelLanguage": "en-US",
+        "panels": [
+            {
+                "createUid": "b46c3fc2-6784-755e-19ea-f37fe7720851",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 2.4,
+                    "i18n": {
+                        "en-US": {
+                            "h": 2.4,
+                            "w": 24,
+                            "x": 0,
+                            "y": 0
+                        }
+                    },
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                },
+                "i18n": {
+                    "en-US": {
+                        "title": "-",
+                        "titleFontSize": "1.4vw",
+                        "titleFontSizeVal": "100%"
+                    }
+                },
+                "id": 21,
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "refreshInView": false,
+                "targets": [
+                    {
+                        "hide": true,
+                        "refId": "A"
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "-",
+                "titleAdjFontSize": true,
+                "titleFontSize": "1.4vw",
+                "titleFontSizeVal": "100%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "type": "ifps-andon-switch-panel"
+            },
+            {
+                "adjustableFontSize": true,
+                "cacheTimeout": null,
+                "createUid": "129f9caf-9ce3-bb67-4627-ec7a67b343d4",
+                "currentMode": "indicators",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 4,
+                    "i18n": {
+                        "en-US": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 0,
+                            "y": 2.4
+                        },
+                        "zh-TW": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 8,
+                            "y": 0
+                        }
+                    },
+                    "w": 8,
+                    "x": 0,
+                    "y": 2.4
+                },
+                "i18n": {
+                    "en-US": {
+                        "title": "Event Status",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 16,
+                "indicatorDivider": false,
+                "indicatorPosition": "center",
+                "indicatorsConfigs": [
+                    {
+                        "postfix": {
+                            "applyValueColor": false,
+                            "fontSize": "80%",
+                            "name": "",
+                            "selected": "",
+                            "selectedQuery": ""
+                        },
+                        "prefix": {
+                            "applyValueColor": false,
+                            "fontSize": "140%",
+                            "name": ""
+                        },
+                        "subtitle": {
+                            "color": "#5ac8fa",
+                            "fontSize": "70%",
+                            "name": "New"
+                        },
+                        "target": {
+                            "decimals": "",
+                            "fillValue": "",
+                            "format": "none",
+                            "layout": {},
+                            "name": "",
+                            "nameColor": "#999999",
+                            "nameFontSize": "80%",
+                            "position": "right",
+                            "preAndPostfix": {
+                                "postColor": "#999999",
+                                "postFontSize": "80%",
+                                "postfix": "",
+                                "preColor": "#999999",
+                                "preFontSize": "80%",
+                                "prefix": ""
+                            },
+                            "selectedCol": "",
+                            "selectedQuery": "",
+                            "selectedValue": "",
+                            "valueColor": "#999999",
+                            "valueFontSize": "80%",
+                            "valueName": "avg"
+                        },
+                        "value": {
+                            "colors": [
+                                "#299c46",
+                                "rgba(237, 129, 40, 0.89)",
+                                "#d44a3a",
+                                "rgba(45, 91, 172, 0.9)",
+                                "rgba(247, 243, 27, 0.9)",
+                                "rgba(184, 27, 247, 0.9)"
+                            ],
+                            "decimals": 0,
+                            "fontSize": "130%",
+                            "format": "short",
+                            "selected": "A-series",
+                            "selectedCol": "new",
+                            "selectedQuery": "A",
+                            "thresholds": {
+                                "fill": "",
+                                "off": false,
+                                "selected": "",
+                                "selectedCol": "",
+                                "selectedQuery": ""
+                            },
+                            "valueName": "min"
+                        }
+                    },
+                    {
+                        "postfix": {
+                            "applyValueColor": false,
+                            "fontSize": "80%",
+                            "name": "",
+                            "selected": "",
+                            "selectedQuery": ""
+                        },
+                        "prefix": {
+                            "applyValueColor": false,
+                            "fontSize": "140%",
+                            "name": ""
+                        },
+                        "subtitle": {
+                            "color": "#5ac8fa",
+                            "fontSize": "70%",
+                            "name": "Assigned"
+                        },
+                        "target": {
+                            "decimals": "",
+                            "fillValue": "",
+                            "format": "none",
+                            "layout": {},
+                            "name": "",
+                            "nameColor": "#999999",
+                            "nameFontSize": "80%",
+                            "position": "right",
+                            "preAndPostfix": {
+                                "postColor": "#999999",
+                                "postFontSize": "80%",
+                                "postfix": "",
+                                "preColor": "#999999",
+                                "preFontSize": "80%",
+                                "prefix": ""
+                            },
+                            "selectedCol": "",
+                            "selectedQuery": "",
+                            "selectedValue": "",
+                            "valueColor": "#999999",
+                            "valueFontSize": "80%",
+                            "valueName": "avg"
+                        },
+                        "value": {
+                            "colors": [
+                                "#299c46",
+                                "rgba(237, 129, 40, 0.89)",
+                                "#d44a3a",
+                                "rgba(45, 91, 172, 0.9)",
+                                "rgba(247, 243, 27, 0.9)",
+                                "rgba(184, 27, 247, 0.9)"
+                            ],
+                            "decimals": 0,
+                            "fontSize": "130%",
+                            "format": "short",
+                            "selected": "A-series",
+                            "selectedCol": "ass",
+                            "selectedQuery": "A",
+                            "thresholds": {
+                                "fill": "",
+                                "off": false,
+                                "selected": "",
+                                "selectedCol": "",
+                                "selectedQuery": ""
+                            },
+                            "valueName": "max"
+                        }
+                    },
+                    {
+                        "postfix": {
+                            "applyValueColor": false,
+                            "fontSize": "80%",
+                            "name": "",
+                            "selected": "",
+                            "selectedQuery": ""
+                        },
+                        "prefix": {
+                            "applyValueColor": false,
+                            "fontSize": "140%",
+                            "name": ""
+                        },
+                        "subtitle": {
+                            "color": "#5ac8fa",
+                            "fontSize": "70%",
+                            "name": "In Progress"
+                        },
+                        "target": {
+                            "decimals": "",
+                            "fillValue": "",
+                            "format": "none",
+                            "layout": {},
+                            "name": "",
+                            "nameColor": "#999999",
+                            "nameFontSize": "80%",
+                            "position": "right",
+                            "preAndPostfix": {
+                                "postColor": "#999999",
+                                "postFontSize": "80%",
+                                "postfix": "",
+                                "preColor": "#999999",
+                                "preFontSize": "80%",
+                                "prefix": ""
+                            },
+                            "selectedCol": "",
+                            "selectedQuery": "",
+                            "selectedValue": "",
+                            "valueColor": "#999999",
+                            "valueFontSize": "80%",
+                            "valueName": "avg"
+                        },
+                        "value": {
+                            "colors": [
+                                "#299c46",
+                                "rgba(237, 129, 40, 0.89)",
+                                "#d44a3a",
+                                "rgba(45, 91, 172, 0.9)",
+                                "rgba(247, 243, 27, 0.9)",
+                                "rgba(184, 27, 247, 0.9)"
+                            ],
+                            "decimals": 0,
+                            "fontSize": "130%",
+                            "format": "short",
+                            "selected": "A-series",
+                            "selectedCol": "ip",
+                            "selectedQuery": "A",
+                            "thresholds": {
+                                "fill": "",
+                                "off": false,
+                                "selected": "",
+                                "selectedCol": "",
+                                "selectedQuery": ""
+                            },
+                            "valueName": "avg"
+                        }
+                    },
+                    {
+                        "postfix": {
+                            "applyValueColor": false,
+                            "fontSize": "80%",
+                            "name": "",
+                            "selected": "",
+                            "selectedQuery": ""
+                        },
+                        "prefix": {
+                            "applyValueColor": false,
+                            "fontSize": "140%",
+                            "name": ""
+                        },
+                        "subtitle": {
+                            "color": "#5ac8fa",
+                            "fontSize": "70%",
+                            "name": "Overdue"
+                        },
+                        "target": {
+                            "decimals": "",
+                            "fillValue": "",
+                            "format": "none",
+                            "layout": {},
+                            "name": "",
+                            "nameColor": "#999999",
+                            "nameFontSize": "80%",
+                            "position": "right",
+                            "preAndPostfix": {
+                                "postColor": "#999999",
+                                "postFontSize": "80%",
+                                "postfix": "",
+                                "preColor": "#999999",
+                                "preFontSize": "80%",
+                                "prefix": ""
+                            },
+                            "selectedCol": "",
+                            "selectedQuery": "",
+                            "selectedValue": "",
+                            "valueColor": "#999999",
+                            "valueFontSize": "80%",
+                            "valueName": "avg"
+                        },
+                        "value": {
+                            "colors": [
+                                "#299c46",
+                                "#ff231e",
+                                "#d44a3a",
+                                "rgba(45, 91, 172, 0.9)",
+                                "rgba(247, 243, 27, 0.9)",
+                                "rgba(184, 27, 247, 0.9)"
+                            ],
+                            "decimals": 0,
+                            "fontSize": "130%",
+                            "format": "short",
+                            "selected": "A-series",
+                            "selectedCol": "od",
+                            "selectedQuery": "A",
+                            "thresholds": {
+                                "display": "",
+                                "fill": "0",
+                                "off": true,
+                                "on": true,
+                                "selected": "",
+                                "selectedCol": "",
+                                "selectedQuery": "",
+                                "type": "number"
+                            },
+                            "valueName": "current"
+                        }
+                    }
+                ],
+                "indicatorsHeading": {
+                    "color": "#5ac8fa",
+                    "fontSize": "70%",
+                    "name": ""
+                },
+                "links": [],
+                "maxDataPoints": 100,
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "referMode": "half",
+                "referPosition": "center",
+                "referScroll": false,
+                "referenceConfigs": [
+                    {
+                        "align": "left",
+                        "borderLeft": false,
+                        "contentFontSize": "80%",
+                        "decimals": "",
+                        "format": "none",
+                        "headerColor": "#5ac8fa",
+                        "labelColor": "#999999",
+                        "labelFontSize": "70%",
+                        "position": "center",
+                        "postfix": "",
+                        "prefix": "",
+                        "sideValSelectedCol": "",
+                        "sideValSelectedQuery": "",
+                        "tagHeader": "",
+                        "tbody": [
+                            {
+                                "label": "",
+                                "selected": ""
+                            }
+                        ],
+                        "tbodyTable": {
+                            "selectedLabelCol": "",
+                            "selectedQuery": "",
+                            "selectedValueCol": ""
+                        },
+                        "valueColor": "#999999",
+                        "valueHeader": "",
+                        "valueName": "avg"
+                    }
+                ],
+                "refreshInView": false,
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel1",
+                        "metricsItem": {
+                            "label": "MC-Panel1",
+                            "value": "MC-Panel1"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Event Status",
+                "titleAdjFontSize": true,
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "trend": {
+                    "barColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,183,0)"
+                    ],
+                    "barWidth": 3,
+                    "decimals": "",
+                    "divide": 0,
+                    "fillDirection": "down",
+                    "fillThres": "",
+                    "fontSize": "70%",
+                    "format": "none",
+                    "formatX": "Autoscale",
+                    "gaugeColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,35,30)"
+                    ],
+                    "lineColor": "rgb(12, 201, 12)",
+                    "maxValue": 100,
+                    "minValue": 0,
+                    "selectedCol": "",
+                    "selectedQuery": "",
+                    "selectedThres": "",
+                    "selectedThresCol": "",
+                    "selectedThresQuery": "",
+                    "thresPostfix": "",
+                    "value": "",
+                    "valueName": "avg"
+                },
+                "trendMode": "graph",
+                "type": "advantech-indicator-panel"
+            },
+            {
+                "adjustableFontSize": true,
+                "createUid": "d60da7fe-2c20-a486-f0c6-ae180ee2c76c",
+                "currentMode": "referenceOnly",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 4,
+                    "i18n": {
+                        "en-US": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 8,
+                            "y": 2.4
+                        },
+                        "zh-TW": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 16,
+                            "y": 4
+                        }
+                    },
+                    "w": 8,
+                    "x": 8,
+                    "y": 2.4
+                },
+                "i18n": {
+                    "en-US": {
+                        "title": "New Event",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 7,
+                "indicatorDivider": false,
+                "indicatorPosition": "center",
+                "indicatorsConfigs": [],
+                "indicatorsHeading": {
+                    "color": "#5ac8fa",
+                    "fontSize": "70%",
+                    "name": ""
+                },
+                "maxDataPoints": 100,
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "referMode": "half",
+                "referPosition": "start",
+                "referScroll": true,
+                "referenceConfigs": [
+                    {
+                        "align": "right",
+                        "borderLeft": false,
+                        "contentFontSize": "80%",
+                        "decimals": 1,
+                        "format": "s",
+                        "headerColor": "#5ac8fa",
+                        "labelColor": "#ffffff",
+                        "labelFontSize": "70%",
+                        "position": "center",
+                        "postfix": "",
+                        "prefix": "",
+                        "sideFontSize": "70%",
+                        "sideLabel": "Total",
+                        "sidePosition": "flex-end",
+                        "sideValSelectedCol": "newEventCount",
+                        "sideValSelectedQuery": "A",
+                        "tagHeader": "",
+                        "tbody": [
+                            {
+                                "label": "",
+                                "selected": ""
+                            }
+                        ],
+                        "tbodyTable": {
+                            "selectedLabelCol": "name",
+                            "selectedQuery": "B",
+                            "selectedValueCol": "times"
+                        },
+                        "valueColor": "#ffffff",
+                        "valueHeader": "",
+                        "valueName": "avg"
+                    }
+                ],
+                "refreshInView": false,
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel3Singlestat",
+                        "metricsItem": {
+                            "label": "MC-Panel3Singlestat",
+                            "value": "MC-Panel3Singlestat"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    },
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel3Table",
+                        "metricsItem": {
+                            "label": "MC-Panel3Table",
+                            "value": "MC-Panel3Table"
+                        },
+                        "refId": "B",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "New Event",
+                "titleAdjFontSize": true,
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "trend": {
+                    "barColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,183,0)"
+                    ],
+                    "barWidth": 3,
+                    "decimals": "",
+                    "divide": 0,
+                    "fillDirection": "down",
+                    "fillThres": "",
+                    "fontSize": "70%",
+                    "format": "none",
+                    "formatX": "Autoscale",
+                    "gaugeColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,35,30)"
+                    ],
+                    "lineColor": "rgb(12, 201, 12)",
+                    "maxValue": 100,
+                    "minValue": 0,
+                    "selectedCol": "",
+                    "selectedQuery": "",
+                    "selectedThres": "",
+                    "selectedThresCol": "",
+                    "selectedThresQuery": "",
+                    "thresPostfix": "",
+                    "value": "",
+                    "valueName": "avg"
+                },
+                "trendMode": "graph",
+                "type": "advantech-indicator-panel"
+            },
+            {
+                "adjustableFontSize": true,
+                "cacheTimeout": null,
+                "createUid": "a288e8c3-ef4d-f96d-807c-b2debb540707",
+                "currentMode": "referenceOnly",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 4,
+                    "i18n": {
+                        "en-US": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 16,
+                            "y": 2.4
+                        },
+                        "zh-TW": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 16,
+                            "y": 0
+                        }
+                    },
+                    "w": 8,
+                    "x": 16,
+                    "y": 2.4
+                },
+                "i18n": {
+                    "en-US": {
+                        "title": "Principal Overview",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 4,
+                "indicatorDivider": false,
+                "indicatorPosition": "center",
+                "indicatorsConfigs": [],
+                "indicatorsHeading": {
+                    "color": "#5ac8fa",
+                    "fontSize": "70%",
+                    "name": ""
+                },
+                "links": [],
+                "maxDataPoints": 100,
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "referMode": "half",
+                "referPosition": "start",
+                "referScroll": true,
+                "referenceConfigs": [
+                    {
+                        "align": "right",
+                        "borderLeft": false,
+                        "contentFontSize": "80%",
+                        "decimals": "",
+                        "format": "none",
+                        "headerColor": "#5ac8fa",
+                        "labelColor": "#ffffff",
+                        "labelFontSize": "70%",
+                        "position": "center",
+                        "postfix": "",
+                        "prefix": "",
+                        "sideFontSize": "70%",
+                        "sideLabel": "Total",
+                        "sidePosition": "flex-end",
+                        "sideValSelectedCol": "eventWithPrincipalCount",
+                        "sideValSelectedQuery": "A",
+                        "tagHeader": "",
+                        "tbody": [
+                            {
+                                "label": "",
+                                "selected": ""
+                            }
+                        ],
+                        "tbodyTable": {
+                            "selectedLabelCol": "principalName",
+                            "selectedQuery": "B",
+                            "selectedValueCol": "times"
+                        },
+                        "valueColor": "#ffffff",
+                        "valueHeader": "",
+                        "valueName": "avg"
+                    }
+                ],
+                "refreshInView": false,
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel5Singlestat",
+                        "metricsItem": {
+                            "label": "MC-Panel5Singlestat",
+                            "value": "MC-Panel5Singlestat"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    },
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel5Table",
+                        "metricsItem": {
+                            "label": "MC-Panel5Table",
+                            "value": "MC-Panel5Table"
+                        },
+                        "refId": "B",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Principal Overview",
+                "titleAdjFontSize": true,
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "trend": {
+                    "barColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,183,0)"
+                    ],
+                    "barWidth": 3,
+                    "decimals": "",
+                    "divide": 0,
+                    "fillDirection": "down",
+                    "fillThres": "",
+                    "fontSize": "70%",
+                    "format": "none",
+                    "formatX": "Autoscale",
+                    "gaugeColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,35,30)"
+                    ],
+                    "lineColor": "rgb(12, 201, 12)",
+                    "maxValue": 100,
+                    "minValue": 0,
+                    "selectedCol": "",
+                    "selectedQuery": "",
+                    "selectedThres": "",
+                    "selectedThresCol": "",
+                    "selectedThresQuery": "",
+                    "thresPostfix": "",
+                    "value": "",
+                    "valueName": "avg"
+                },
+                "trendMode": "graph",
+                "type": "advantech-indicator-panel"
+            },
+            {
+                "adjustableFontSize": true,
+                "createUid": "216e8a12-4dd6-f668-d686-c5996ae98a1a",
+                "currentMode": "reference",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 4,
+                    "i18n": {
+                        "en-US": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 0,
+                            "y": 6.4
+                        },
+                        "zh-TW": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 0,
+                            "y": 0
+                        }
+                    },
+                    "w": 8,
+                    "x": 0,
+                    "y": 6.4
+                },
+                "i18n": {
+                    "en-US": {
+                        "title": "Real-time Event",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 2,
+                "indicatorDivider": true,
+                "indicatorPosition": "center",
+                "indicatorsConfigs": [
+                    {
+                        "colorMaps": [
+                            {
+                                "text": "",
+                                "type": "value",
+                                "value": ""
+                            }
+                        ],
+                        "postfix": {
+                            "applyValueColor": false,
+                            "fontSize": "80%",
+                            "name": "",
+                            "selected": "",
+                            "selectedCol": "",
+                            "selectedQuery": ""
+                        },
+                        "prefix": {
+                            "applyValueColor": false,
+                            "fontSize": "130%",
+                            "name": ""
+                        },
+                        "subtitle": {
+                            "color": "#5ac8fa",
+                            "fontSize": "70%",
+                            "name": "Total"
+                        },
+                        "target": {
+                            "decimals": "",
+                            "fillValue": "",
+                            "format": "none",
+                            "layout": {},
+                            "name": "",
+                            "nameColor": "#999999",
+                            "nameFontSize": "70%",
+                            "position": "right",
+                            "preAndPostfix": {
+                                "postColor": "#999999",
+                                "postFontSize": "70%",
+                                "postfix": "",
+                                "preColor": "#999999",
+                                "preFontSize": "70%",
+                                "prefix": ""
+                            },
+                            "selectedCol": "",
+                            "selectedQuery": "",
+                            "selectedValue": "",
+                            "valueColor": "#999999",
+                            "valueFontSize": "70%",
+                            "valueName": "avg"
+                        },
+                        "value": {
+                            "colors": [
+                                "#0cc90c",
+                                "#ffb700",
+                                "#ff231e"
+                            ],
+                            "decimals": null,
+                            "fontSize": "130%",
+                            "format": "none",
+                            "selected": "",
+                            "selectedCol": "total",
+                            "selectedQuery": "A",
+                            "thresholds": {
+                                "display": "Low, Normal, High",
+                                "fill": "50, 80",
+                                "on": false,
+                                "selected": "",
+                                "selectedCol": "",
+                                "selectedQuery": "",
+                                "type": "number"
+                            },
+                            "valueName": "avg"
+                        },
+                        "valueMaps": [
+                            {
+                                "text": "",
+                                "value": ""
+                            }
+                        ]
+                    }
+                ],
+                "indicatorsHeading": {
+                    "color": "#5ac8fa",
+                    "fontSize": "70%",
+                    "name": ""
+                },
+                "maxDataPoints": 100,
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "referMode": "half",
+                "referPosition": "start",
+                "referScroll": false,
+                "referenceConfigs": [
+                    {
+                        "align": "right",
+                        "borderLeft": false,
+                        "contentFontSize": "70%",
+                        "decimals": 1,
+                        "format": "s",
+                        "headerColor": "#5ac8fa",
+                        "labelColor": "#ffffff",
+                        "labelFontSize": "55%",
+                        "position": "center",
+                        "postfix": "",
+                        "prefix": "",
+                        "sideValSelectedCol": "",
+                        "sideValSelectedQuery": "",
+                        "tagHeader": "Location",
+                        "tbody": [
+                            {
+                                "label": "",
+                                "selected": ""
+                            }
+                        ],
+                        "tbodyTable": {
+                            "selectedLabelCol": "name",
+                            "selectedQuery": "B",
+                            "selectedValueCol": "abnormalLastingSecond"
+                        },
+                        "valueColor": "#ffffff",
+                        "valueHeader": "Lasting Time",
+                        "valueName": "avg"
+                    }
+                ],
+                "refreshInView": false,
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "hide": false,
+                        "metrics": "MC-Panel2Singlestat",
+                        "metricsItem": {
+                            "label": "MC-Panel2Singlestat",
+                            "value": "MC-Panel2Singlestat"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    },
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "hide": false,
+                        "metrics": "MC-Panel2Table",
+                        "metricsItem": {
+                            "label": "MC-Panel2Table",
+                            "value": "MC-Panel2Table"
+                        },
+                        "refId": "B",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Real-time Event",
+                "titleAdjFontSize": true,
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "trend": {
+                    "barColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,183,0)"
+                    ],
+                    "barWidth": 3,
+                    "decimals": "",
+                    "divide": 0,
+                    "fillDirection": "down",
+                    "fillThres": "",
+                    "fontSize": "70%",
+                    "format": "none",
+                    "formatX": "Autoscale",
+                    "gaugeColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,35,30)"
+                    ],
+                    "lineColor": "rgb(12, 201, 12)",
+                    "maxValue": 100,
+                    "minValue": 0,
+                    "selectedCol": "",
+                    "selectedQuery": "",
+                    "selectedThres": "",
+                    "selectedThresCol": "",
+                    "selectedThresQuery": "",
+                    "thresPostfix": "",
+                    "value": "",
+                    "valueName": "avg"
+                },
+                "trendMode": "graph",
+                "type": "advantech-indicator-panel"
+            },
+            {
+                "adjustableFontSize": true,
+                "createUid": "8c4c1c2e-a280-beba-22c8-df9049707b0d",
+                "currentMode": "referenceOnly",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 4,
+                    "i18n": {
+                        "en-US": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 8,
+                            "y": 6.4
+                        },
+                        "zh-TW": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 16,
+                            "y": 4
+                        }
+                    },
+                    "w": 8,
+                    "x": 8,
+                    "y": 6.4
+                },
+                "i18n": {
+                    "en-US": {
+                        "title": "Overdue Event",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 22,
+                "indicatorDivider": false,
+                "indicatorPosition": "center",
+                "indicatorsConfigs": [],
+                "indicatorsHeading": {
+                    "color": "#5ac8fa",
+                    "fontSize": "70%",
+                    "name": ""
+                },
+                "maxDataPoints": 100,
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "referMode": "half",
+                "referPosition": "start",
+                "referScroll": true,
+                "referenceConfigs": [
+                    {
+                        "align": "right",
+                        "borderLeft": false,
+                        "contentFontSize": "80%",
+                        "decimals": 1,
+                        "format": "s",
+                        "headerColor": "#5ac8fa",
+                        "labelColor": "#ffffff",
+                        "labelFontSize": "70%",
+                        "position": "center",
+                        "postfix": "",
+                        "prefix": "",
+                        "sideFontSize": "70%",
+                        "sideLabel": "Total",
+                        "sidePosition": "flex-end",
+                        "sideValSelectedCol": "overdueCount",
+                        "sideValSelectedQuery": "A",
+                        "tagHeader": "",
+                        "tbody": [
+                            {
+                                "label": "",
+                                "selected": ""
+                            }
+                        ],
+                        "tbodyTable": {
+                            "selectedLabelCol": "machineName",
+                            "selectedQuery": "B",
+                            "selectedValueCol": "abnormalLastingSecond"
+                        },
+                        "valueColor": "#ffffff",
+                        "valueHeader": "",
+                        "valueName": "avg"
+                    }
+                ],
+                "refreshInView": false,
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel4Singlestat",
+                        "metricsItem": {
+                            "label": "MC-Panel4Singlestat",
+                            "value": "MC-Panel4Singlestat"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    },
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel4Table",
+                        "metricsItem": {
+                            "label": "MC-Panel4Table",
+                            "value": "MC-Panel4Table"
+                        },
+                        "refId": "B",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Overdue Event",
+                "titleAdjFontSize": true,
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "trend": {
+                    "barColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,183,0)"
+                    ],
+                    "barWidth": 3,
+                    "decimals": "",
+                    "divide": 0,
+                    "fillDirection": "down",
+                    "fillThres": "",
+                    "fontSize": "70%",
+                    "format": "none",
+                    "formatX": "Autoscale",
+                    "gaugeColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,35,30)"
+                    ],
+                    "lineColor": "rgb(12, 201, 12)",
+                    "maxValue": 100,
+                    "minValue": 0,
+                    "selectedCol": "",
+                    "selectedQuery": "",
+                    "selectedThres": "",
+                    "selectedThresCol": "",
+                    "selectedThresQuery": "",
+                    "thresPostfix": "",
+                    "value": "",
+                    "valueName": "avg"
+                },
+                "trendMode": "graph",
+                "type": "advantech-indicator-panel"
+            },
+            {
+                "adjustableFontSize": true,
+                "cacheTimeout": null,
+                "createUid": "4a4934b2-3c60-a365-180a-4d2c769fccb8",
+                "currentMode": "referenceOnly",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 4,
+                    "i18n": {
+                        "en-US": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 16,
+                            "y": 6.4
+                        },
+                        "zh-TW": {
+                            "h": 4,
+                            "w": 8,
+                            "x": 16,
+                            "y": 0
+                        }
+                    },
+                    "w": 8,
+                    "x": 16,
+                    "y": 6.4
+                },
+                "i18n": {
+                    "en-US": {
+                        "title": "Today Event",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 23,
+                "indicatorDivider": false,
+                "indicatorPosition": "center",
+                "indicatorsConfigs": [],
+                "indicatorsHeading": {
+                    "color": "#5ac8fa",
+                    "fontSize": "70%",
+                    "name": ""
+                },
+                "links": [],
+                "maxDataPoints": 100,
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "referMode": "half",
+                "referPosition": "start",
+                "referScroll": true,
+                "referenceConfigs": [
+                    {
+                        "align": "right",
+                        "borderLeft": false,
+                        "contentFontSize": "80%",
+                        "decimals": "",
+                        "format": "none",
+                        "headerColor": "#5ac8fa",
+                        "labelColor": "#ffffff",
+                        "labelFontSize": "70%",
+                        "position": "center",
+                        "postfix": "",
+                        "prefix": "",
+                        "sideFontSize": "70%",
+                        "sideLabel": "Total",
+                        "sidePosition": "flex-end",
+                        "sideValSelectedCol": "todayEventCount",
+                        "sideValSelectedQuery": "A",
+                        "tagHeader": "",
+                        "tbody": [
+                            {
+                                "label": "",
+                                "selected": ""
+                            }
+                        ],
+                        "tbodyTable": {
+                            "selectedLabelCol": "eventName",
+                            "selectedQuery": "B",
+                            "selectedValueCol": "todayTimes"
+                        },
+                        "valueColor": "#ffffff",
+                        "valueHeader": "",
+                        "valueName": "avg"
+                    }
+                ],
+                "refreshInView": false,
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel6Singlestat",
+                        "metricsItem": {
+                            "label": "MC-Panel6Singlestat",
+                            "value": "MC-Panel6Singlestat"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    },
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel6Table",
+                        "metricsItem": {
+                            "label": "MC-Panel6Table",
+                            "value": "MC-Panel6Table"
+                        },
+                        "refId": "B",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Today Event",
+                "titleAdjFontSize": true,
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "trend": {
+                    "barColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,183,0)"
+                    ],
+                    "barWidth": 3,
+                    "decimals": "",
+                    "divide": 0,
+                    "fillDirection": "down",
+                    "fillThres": "",
+                    "fontSize": "70%",
+                    "format": "none",
+                    "formatX": "Autoscale",
+                    "gaugeColor": [
+                        "rgb(12,201,21)",
+                        "rgb(255,35,30)"
+                    ],
+                    "lineColor": "rgb(12, 201, 12)",
+                    "maxValue": 100,
+                    "minValue": 0,
+                    "selectedCol": "",
+                    "selectedQuery": "",
+                    "selectedThres": "",
+                    "selectedThresCol": "",
+                    "selectedThresQuery": "",
+                    "thresPostfix": "",
+                    "value": "",
+                    "valueName": "avg"
+                },
+                "trendMode": "graph",
+                "type": "advantech-indicator-panel"
+            },
+            {
+                "autoOpen": true,
+                "autoplayLists": {
+                    "en-US": [
+                        {
+                            "display": "/d/ANDON_FC_R3JvdXA_YHQzlvL-9gAGQN1D/flowcharting-demogroup?orgId=1&fullscreen&panelId=2&theme=gray&viewHide=inTextPanel",
+                            "url": "$mapURL"
+                        }
+                    ]
+                },
+                "autoplayTime": "5s",
+                "content": "\n# Title\n\nFor markdown syntax help: [commonmark.org/help](https://commonmark.org/help/)\n\n\n\n",
+                "createUid": "8b618c3d-350b-d780-7f61-9ab5de276bc5",
+                "datasource": "${DS_ANDON}",
+                "gridPos": {
+                    "h": 7,
+                    "i18n": {
+                        "en-US": {
+                            "h": 7,
+                            "w": 16,
+                            "x": 0,
+                            "y": 10.4
+                        }
+                    },
+                    "w": 16,
+                    "x": 0,
+                    "y": 10.4
+                },
+                "i18n": {
+                    "en-US": {
+                        "content": "\n# Title\n\nFor markdown syntax help: [commonmark.org/help](https://commonmark.org/help/)\n\n\n\n",
+                        "title": "Factory Map",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 18,
+                "mode": "autoplay",
+                "options": {},
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "refreshInView": false,
+                "storePanelTitlePro": "rgba(0,0,0,0)",
+                "targets": [
+                    {
+                        "groupID": "R3JvdXA.X-0tJMYGAgAG-fkZ",
+                        "groupName": "III",
+                        "groupNameItem": {
+                            "label": "III",
+                            "value": "R3JvdXA.X-0tJMYGAgAG-fkZ"
+                        },
+                        "metrics": "FlowCharting-Machines",
+                        "metricsItem": {
+                            "label": "FlowCharting-Machines",
+                            "value": "FlowCharting-Machines"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    },
+                    {
+                        "groupID": "R3JvdXA.X-0tJMYGAgAG-fkZ",
+                        "groupName": "III",
+                        "groupNameItem": {
+                            "label": "III",
+                            "value": "R3JvdXA.X-0tJMYGAgAG-fkZ"
+                        },
+                        "hide": true,
+                        "metrics": "FlowCharting-TPC",
+                        "metricsItem": {
+                            "label": "FlowCharting-TPC",
+                            "value": "FlowCharting-TPC"
+                        },
+                        "refId": "B",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Factory Map",
+                "titleAdjFontSize": true,
+                "titleBgColor": "rgba(0,0,0,0)",
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transparentRange": 1,
+                "type": "text"
+            },
+            {
+                "activeCustomColumnIndex": 0,
+                "activeRowStyleIndex": 0,
+                "activeStatusIndex": 0,
+                "adjFontSize": true,
+                "breakWord": false,
+                "columns": [],
+                "compactRowsEnabled": false,
+                "conditionset": [],
+                "createUid": "8d3ceb5c-c438-166d-69ad-487249d4e3ba",
+                "customColumns": [],
+                "customColumnsNum": 1,
+                "dataTableVersion": "new",
+                "dataType": "table",
+                "datasource": "${DS_ANDON}",
+                "evenRowBGColorSet": "",
+                "fontSize": "70%",
+                "gridPos": {
+                    "h": 7,
+                    "i18n": {
+                        "en-US": {
+                            "h": 7,
+                            "w": 8,
+                            "x": 16,
+                            "y": 10.4
+                        },
+                        "zh-TW": {
+                            "h": 9,
+                            "w": 4,
+                            "x": 16,
+                            "y": 8
+                        }
+                    },
+                    "w": 8,
+                    "x": 16,
+                    "y": 10.4
+                },
+                "headerHidden": false,
+                "hoverBGColorSet": "",
+                "hoverEnabled": true,
+                "i18n": {
+                    "en-US": {
+                        "fontSize": "70%",
+                        "tableTitleFont": "80%",
+                        "title": "Today Rank",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 10,
+                "infoEnabled": true,
+                "isMath": false,
+                "isMathInputVal": false,
+                "isMathTip": false,
+                "mathInputVal": "",
+                "mergeColums": [],
+                "mergeType": "nameString",
+                "metricRuleObjArr": [],
+                "oddRowBGColorSet": "",
+                "options": {},
+                "pageSize": null,
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "refreshInView": false,
+                "rowNumbersEnabled": true,
+                "rowStyles": [
+                    {
+                        "colNum": "1",
+                        "i18n": {
+                            "en-US": {
+                                "rowhtml": ""
+                            }
+                        },
+                        "rowAlias": null,
+                        "rowNum": "1",
+                        "rowhtml": "",
+                        "rowopenNewTab": false,
+                        "thresholdConfig": {
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(45, 91, 172, 0.9)",
+                                "rgba(247, 243, 27, 0.9)",
+                                "rgba(184, 27, 247, 0.9)"
+                            ],
+                            "thresColumn": "",
+                            "thresholds": []
+                        }
+                    }
+                ],
+                "scroll": true,
+                "searchcontrol": "down",
+                "separateColumnsNum": "",
+                "showCellBorders": false,
+                "showHeader": true,
+                "showRowBorders": true,
+                "sort": {
+                    "col": 2,
+                    "desc": true
+                },
+                "spreadfold": "spread",
+                "statusLamp": [],
+                "storePanelTitlePro": "#464646",
+                "stripedRowsEnabled": true,
+                "styles": [
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Location",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Location",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "machineName",
+                        "sanitize": false,
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "string",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Count",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 0,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Count",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "times",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "number",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Lasting Time",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 1,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Lasting Time",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "abnormalLastingSecond",
+                        "styleDatethresholds": null,
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "number",
+                        "unit": "s",
+                        "url": false
+                    }
+                ],
+                "tableFontVal": "0.8vw",
+                "tableTitleAlign": "left",
+                "tableTitleBold": true,
+                "tableTitleFont": "80%",
+                "tableTitleFontColorSet": "#5ac8fa",
+                "tableTitleFontVal": "1vw",
+                "tableTitlebgColorSet": "",
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel8",
+                        "metricsItem": {
+                            "label": "MC-Panel8",
+                            "value": "MC-Panel8"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Today Rank",
+                "titleAdjFontSize": true,
+                "titleBgColor": "#464646",
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transform": "table",
+                "transparentRange": 1,
+                "type": "advantech-datatable-panel"
+            },
+            {
+                "activeCustomColumnIndex": 0,
+                "activeRowStyleIndex": 0,
+                "activeStatusIndex": 0,
+                "adjFontSize": true,
+                "breakWord": false,
+                "columns": [],
+                "compactRowsEnabled": false,
+                "conditionset": [],
+                "createUid": "d88bfc72-27eb-c909-610e-2214be7433bf",
+                "customColumns": [],
+                "customColumnsNum": 1,
+                "dataTableVersion": "new",
+                "dataType": "table",
+                "datasource": "${DS_ANDON}",
+                "evenRowBGColorSet": "",
+                "fontSize": "70%",
+                "gridPos": {
+                    "h": 10,
+                    "i18n": {
+                        "en-US": {
+                            "h": 10,
+                            "w": 24,
+                            "x": 0,
+                            "y": 17.4
+                        },
+                        "zh-TW": {
+                            "h": 10,
+                            "w": 24,
+                            "x": 0,
+                            "y": 21
+                        }
+                    },
+                    "w": 24,
+                    "x": 0,
+                    "y": 17.4
+                },
+                "headerHidden": false,
+                "hoverBGColorSet": "",
+                "hoverEnabled": true,
+                "i18n": {
+                    "en-US": {
+                        "fontSize": "70%",
+                        "tableTitleFont": "80%",
+                        "title": "Events",
+                        "titleFontSize": "1vw",
+                        "titleFontSizeVal": "80%"
+                    }
+                },
+                "id": 15,
+                "infoEnabled": true,
+                "isMath": false,
+                "isMathInputVal": false,
+                "isMathTip": false,
+                "mathInputVal": "",
+                "mergeColums": [],
+                "mergeType": "nameString",
+                "metricRuleObjArr": [],
+                "oddRowBGColorSet": "",
+                "options": {},
+                "pageSize": null,
+                "panelGradientEndColor": "",
+                "panelPillarColor": "",
+                "panelStartGradientColor": "",
+                "panelTitleScheme": "Default",
+                "refreshInView": false,
+                "rowNumbersEnabled": false,
+                "rowStyles": [
+                    {
+                        "colNum": "1",
+                        "i18n": {
+                            "en-US": {
+                                "rowhtml": ""
+                            }
+                        },
+                        "rowAlias": null,
+                        "rowNum": "1",
+                        "rowhtml": "",
+                        "rowopenNewTab": false,
+                        "thresholdConfig": {
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(45, 91, 172, 0.9)",
+                                "rgba(247, 243, 27, 0.9)",
+                                "rgba(184, 27, 247, 0.9)"
+                            ],
+                            "thresColumn": "",
+                            "thresholds": []
+                        }
+                    }
+                ],
+                "scroll": true,
+                "searchcontrol": "down",
+                "separateColumnsNum": "",
+                "showCellBorders": true,
+                "showHeader": true,
+                "showRowBorders": false,
+                "sort": {
+                    "col": 15,
+                    "desc": true
+                },
+                "spreadfold": "spread",
+                "statusLamp": [],
+                "storePanelTitlePro": "#464646",
+                "stripedRowsEnabled": true,
+                "styles": [
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "事件類別",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "#ff231e",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "事件類別",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "EventCode",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false,
+                        "valueMaps": [
+                            {
+                                "text": "Call Repair",
+                                "value": "1"
+                            },
+                            {
+                                "text": "Call Supervisor",
+                                "value": "2"
+                            }
+                        ]
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Event Type",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Event Type",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "Type",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "string",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Location",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Location",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "MachineName",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "string",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "yellow",
+                            "red",
+                            "green"
+                        ],
+                        "alias": "Status",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMaps": [],
+                        "colorMode": "alarm",
+                        "colors": [
+                            "#ff231e",
+                            "#00cc66",
+                            "#ff231e",
+                            "#00cc66",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Status",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "ProcessingStatusCode",
+                        "thresholds": [
+                            "4"
+                        ],
+                        "thresholdsDisplay": [],
+                        "type": "string",
+                        "unit": "short",
+                        "url": false,
+                        "valueMaps": [
+                            {
+                                "text": "New",
+                                "value": "0"
+                            },
+                            {
+                                "text": "Assigned",
+                                "value": "1"
+                            },
+                            {
+                                "text": "In Progress",
+                                "value": "3"
+                            },
+                            {
+                                "text": "Overdue",
+                                "value": "4"
+                            },
+                            {
+                                "text": "Completed",
+                                "value": "5"
+                            },
+                            {
+                                "text": "Cancel",
+                                "value": "6"
+                            }
+                        ]
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Principal",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Principal",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "PrincipalName",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "string",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Lasting Time",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 0,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Lasting Time",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "AbnormalLastingSecond",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "number",
+                        "unit": "s",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Create TIme",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Create TIme",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "AbnormalStartTime",
+                        "styleDatethresholds": null,
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "date",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "排修時間",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "排修時間",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "PlanRepairTime",
+                        "styleDatethresholds": null,
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Repair Time",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Repair Time",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "RepairStartTime",
+                        "styleDatethresholds": null,
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "date",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Complete Time",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Complete Time",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "CompleteTime",
+                        "styleDatethresholds": null,
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "date",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "EventID",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "GroupID",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "GroupName",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "MachineID",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "ProcessingProgress",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Plan Repair Time",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Plan Repair Time",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "ShouldRepairTime",
+                        "styleDatethresholds": null,
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "date",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "TPCID",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "TPC",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "TPC",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "TPCName",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "string",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "PrincipalID",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "AbnormalReason",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "AbnormalSolution",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "AbnormalCode",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "AbnormalPosition",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "hidden",
+                        "unit": "short",
+                        "url": false
+                    },
+                    {
+                        "alarmColors": [
+                            "green",
+                            "yellow",
+                            "red"
+                        ],
+                        "alias": "Event Name",
+                        "align": "left",
+                        "arraycolors": [
+                            "rgb(23, 180, 16)",
+                            "rgb(255, 197, 0)",
+                            "rgb(210, 30, 0)"
+                        ],
+                        "bar": false,
+                        "bold": true,
+                        "colorMode": null,
+                        "colors": [
+                            "rgba(245, 54, 54, 0.9)",
+                            "rgba(237, 129, 40, 0.89)",
+                            "rgba(50, 172, 45, 0.97)",
+                            "rgba(45, 91, 172, 0.9)",
+                            "rgba(247, 243, 27, 0.9)",
+                            "rgba(184, 27, 247, 0.9)"
+                        ],
+                        "colpostfix": "",
+                        "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                        "decimals": 2,
+                        "i18n": {
+                            "en-US": {
+                                "alias": "Event Name",
+                                "colpostfix": "",
+                                "linkTooltip": "",
+                                "linkUrl": "",
+                                "thresholdsDisplay": []
+                            }
+                        },
+                        "icon": false,
+                        "linkTooltip": "",
+                        "linkUrl": "",
+                        "mappingType": 1,
+                        "pattern": "EventName",
+                        "thresholds": [],
+                        "thresholdsDisplay": [],
+                        "type": "string",
+                        "unit": "short",
+                        "url": false
+                    }
+                ],
+                "tableFontVal": "0.8vw",
+                "tableTitleAlign": "left",
+                "tableTitleBold": true,
+                "tableTitleFont": "80%",
+                "tableTitleFontColorSet": "#5ac8fa",
+                "tableTitleFontVal": "1vw",
+                "tableTitlebgColorSet": "",
+                "targets": [
+                    {
+                        "groupID": "$groupId",
+                        "groupName": "$groupId",
+                        "groupNameItem": {
+                            "__isNew__": true,
+                            "label": "$groupId",
+                            "value": "$groupId"
+                        },
+                        "metrics": "MC-Panel9",
+                        "metricsItem": {
+                            "label": "MC-Panel9",
+                            "value": "MC-Panel9"
+                        },
+                        "refId": "A",
+                        "type": "table",
+                        "typeItem": {
+                            "label": "Table",
+                            "value": "table"
+                        }
+                    }
+                ],
+                "timeFrom": null,
+                "timeShift": null,
+                "title": "Events",
+                "titleAdjFontSize": true,
+                "titleBgColor": "#464646",
+                "titleFontSize": "1vw",
+                "titleFontSizeVal": "80%",
+                "titleShow": false,
+                "titleTxtAlign": "center",
+                "titleTxtBold": "bold",
+                "transform": "table",
+                "transparentRange": 1,
+                "type": "advantech-datatable-panel"
+            }
+        ],
+        "recovery": {
+            "enter": false
+        },
+        "refresh": "5s",
+        "refreshInView": false,
+        "schemaVersion": 21,
+        "startingGradientColor": "",
+        "style": "dark",
+        "tags": [],
+        "templating": {
+            "list": [
+                {
+                    "controlFlag": true,
+                    "current": {
+                        "value": "${VAR_GROUPID}",
+                        "text": "${VAR_GROUPID}"
+                    },
+                    "hide": 2,
+                    "label": "groupId",
+                    "name": "groupId",
+                    "options": [
+                        {
+                            "value": "${VAR_GROUPID}",
+                            "text": "${VAR_GROUPID}"
+                        }
+                    ],
+                    "query": "${VAR_GROUPID}",
+                    "skipUrlSync": false,
+                    "type": "constant"
+                },
+                {
+                    "controlFlag": true,
+                    "current": {
+                        "value": "${VAR_MAPURL}",
+                        "text": "${VAR_MAPURL}"
+                    },
+                    "hide": 2,
+                    "label": "mapURL",
+                    "name": "mapURL",
+                    "options": [
+                        {
+                            "value": "${VAR_MAPURL}",
+                            "text": "${VAR_MAPURL}"
+                        }
+                    ],
+                    "query": "${VAR_MAPURL}",
+                    "skipUrlSync": false,
+                    "type": "constant"
+                },
+                {
+                    "controlFlag": true,
+                    "current": {
+                        "value": "${VAR_GROUPNAME}",
+                        "text": "${VAR_GROUPNAME}"
+                    },
+                    "hide": 2,
+                    "label": "groupName",
+                    "name": "groupName",
+                    "options": [
+                        {
+                            "value": "${VAR_GROUPNAME}",
+                            "text": "${VAR_GROUPNAME}"
+                        }
+                    ],
+                    "query": "${VAR_GROUPNAME}",
+                    "skipUrlSync": false,
+                    "type": "constant"
+                }
+            ]
+        },
+        "time": {
+            "from": "now-6h",
+            "to": "now"
+        },
+        "timepicker": {
+            "customTimeRange": [],
+            "panelTimePicker": [
+                "Last 5 minutes",
+                "Last 15 minutes",
+                "Last 30 minutes",
+                "Last 1 hour",
+                "Last 3 hours",
+                "Last 6 hours",
+                "Last 12 hours",
+                "Last 24 hours",
+                "Last 2 days",
+                "Last 7 days",
+                "Last 30 days",
+                "Last 90 days",
+                "Last 6 months",
+                "Last 1 year",
+                "Last 2 years",
+                "Last 5 years",
+                "Yesterday",
+                "Day before yesterday",
+                "This day last week",
+                "Previous week",
+                "Previous month",
+                "Previous year",
+                "Today",
+                "Today so far",
+                "This week",
+                "This week so far",
+                "This month",
+                "This month so far",
+                "This year",
+                "This year so far"
+            ],
+            "refresh_intervals": [
+                "1s",
+                "2s",
+                "3s",
+                "5s",
+                "10s",
+                "30s",
+                "1m",
+                "5m",
+                "15m",
+                "30m",
+                "1h",
+                "2h",
+                "1d"
+            ]
+        },
+        "timezone": "",
+        "title": "Monitoring Center",
+        "totalVariableArray": [],
+        "uid": "ANDON_EN_MC",
+        "version": 1
+    },
+    "overwrite": false,
+    "inputs": [
+        {
+            "name": "DS_ANDON",
+            "type": "datasource",
+            "pluginId": "ifps-andon-datasource",
+            "value": "Andon Datasource"
+        },
+        {
+            "name": "VAR_GROUPID",
+            "type": "constant",
+            "value": "-"
+        },
+        {
+            "name": "VAR_MAPURL",
+            "type": "constant",
+            "value": "-"
+        },
+        {
+            "name": "VAR_GROUPNAME",
+            "type": "constant",
+            "value": "-"
+        }
+    ],
+    "folderId": 0
+}

@@ -1,7 +1,7 @@
 #!/bin/bash
 CONTAINER="ifps-andon-daemon-databroker"
 DOCKER_REPO="iiicondor/$CONTAINER"
-VERSION="1.0.9"
+VERSION="1.0.15"
 
 docker build -t $DOCKER_REPO:$VERSION .
 docker push $DOCKER_REPO:$VERSION

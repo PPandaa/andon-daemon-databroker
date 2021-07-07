@@ -1,0 +1,16 @@
+[
+    {
+        "orgId": 1,
+        "srpName": "",
+        "language": "sys",
+        "configJs": "{\"dashboard\":{\"url\":\"https://dashboardHostname\",\"westUrl\":\"https://dashboardHostname\",\"westTitle\":\"\",\"eastUrl\":\"https://dashboardHostname\"},\"language\":[{\"text\":\"English\",\"abbr\":\"en\",\"default\":true}],\"theme\":{\"style\":\"gray\"},\"menu\":{\"swipeMenu\":{\"initClosed\":false,\"openFirstLayer\":true}},\"user\":{\"visible\":true},\"heightAdjust\":false,\"loginLogout\":false,\"dashboardHeader\":true}",
+        "logoImg": ""
+    },
+    {
+        "orgId": 1,
+        "srpName": "",
+        "language": "en",
+        "configJs": "{\"dashboard\":{\"url\":\"https://dashboardHostname\",\"westTitle\":\"\",\"westTitleDisplay\":true,\"westUrl\":\"https://dashboardHostname\",\"eastUrl\":\"https://dashboardHostname\"},\"title\":{\"description\":\"\",\"westTitle\":\"\",\"eastTitle\":\"\"},\"frame\":{\"main\":{},\"west\":{\"isGrafana\":true,\"addTitle\":true,\"slideshow\":false,\"slideshowInterval\":\"30s\",\"urlList\":[{\"url\":\"https://dashboardHostname\"}]},\"east\":{\"isGrafana\":true,\"addTitle\":true,\"slideshow\":false,\"slideshowInterval\":\"30s\",\"urlList\":[{\"url\":\"https://dashboardHostname\"}]}},\"menu\":{\"list\":[{\"icon\":\"\",\"title\":\"1 Real Time\",\"type\":\"folder\",\"uid\":\"f5382166-3a81-45c8-971e-b35ce56234e9\",\"list\":[{\"icon\":\"\",\"title\":\"1-1 Monitoring Center\",\"selected\":true,\"type\":\"dashboard\",\"dashFolder\":{\"text\":\"serviceName\",\"id\":serviceFolderID},\"dashName\":\"Monitoring Center\",\"dashboard\":\"/d/ANDON_EN_MC/monitoring-center\",\"uid\":\"b7744d03-2f3a-4bef-9abf-b2727c3c28e4\"}],\"selected\":false},{\"icon\":\"\",\"title\":\"2 History Analysis\",\"type\":\"folder\",\"uid\":\"482671a1-f122-42fd-b971-d75b1ee681e2\",\"list\":[{\"icon\":\"\",\"title\":\"2-1 Failure Metric\",\"type\":\"dashboard\",\"uid\":\"f3be73fd-54cd-47b6-a548-ffc5aa5546d0\",\"selected\":false,\"dashFolder\":{\"text\":\"serviceName\",\"id\":serviceFolderID},\"dashName\":\"Failure Metrics\",\"dashboard\":\"/d/ANDON_EN_FM/failure-metrics\"},{\"icon\":\"\",\"title\":\"2-2 Event Work Order Overview\",\"selected\":false,\"type\":\"dashboard\",\"dashFolder\":{\"text\":\"serviceName\",\"id\":serviceFolderID},\"dashName\":\"Event Work Order Overview\",\"dashboard\":\"/d/ANDON_EN_EWOO/event-work-order-overview\",\"uid\":\"af69e52e-9d7e-4276-8390-2c0a721c669d\"}],\"selected\":false}],\"slideshowInterval\":\"\"},\"alerting\":{\"link\":\"\",\"type\":\"dashboard\",\"linkEnable\":false,\"visible\":false,\"accumulative\":false,\"refresh\":\"1m\",\"readEnable\":false},\"notice\":{\"link\":\"\",\"type\":\"dashboard\",\"linkEnable\":false,\"visible\":false,\"accumulative\":false,\"refresh\":\"1m\",\"readEnable\":false},\"marquee\":{\"enable\":false,\"refresh\":\"never\",\"text\":\"SRPFrame Demo\",\"type\":\"text\"},\"login\":{\"visible\":true}}",
+        "logoImg": ""
+    }
+]

@@ -160,8 +160,8 @@ func dashboardPrincipal() {
 	initial.FromLocalImportPlugins()
 
 	fmt.Println("[2/5] Create Datasource")
-	initial.CreateDatasource("Desk Datasource", "advantech-ifp-datasource", config.IFP_DESK_DATASOURCE_API_URL.String())
-	initial.CreateDatasource(config.ServiceName+" Datasource", "ifps-andon-datasource", config.DASHBOARD_API_URL.String())
+	initial.CreateDatasource("iFactory Datasource", "advantech-ifp-datasource", config.IFP_DESK_DATASOURCE_API_URL.String())
+	initial.CreateDatasource(config.ServiceName+" Datasource", "ifps-andon-datasource", config.IFPS_ANDON_DATASOURCE_API_URL.String())
 
 	fmt.Println("[3/5] Create", config.ServiceName, "Folder")
 	initial.CreateDashboardFolder(config.ServiceName)
