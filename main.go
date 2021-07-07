@@ -26,15 +26,15 @@ func initGlobalVar() {
 		log.Fatalf("Error loading env file")
 	}
 
-	config.Datacenter = os.Getenv("datacenter")
-	config.Workspace = os.Getenv("workspace")
-	config.Cluster = os.Getenv("cluster")
-	config.Namespace = os.Getenv("namespace")
-	config.External = os.Getenv("external")
-
 	sso_api_url := os.Getenv("SSO_API_URL")
 	if len(sso_api_url) != 0 {
 		config.ServerLocation = "Cloud"
+
+		config.Datacenter = os.Getenv("datacenter")
+		config.Workspace = os.Getenv("workspace")
+		config.Cluster = os.Getenv("cluster")
+		config.Namespace = os.Getenv("namespace")
+		config.External = os.Getenv("external")
 
 		if config.Namespace == "ifpsdev" || config.Namespace == "ifpsdemo" {
 			config.SSO_API_URL, _ = url.Parse("https://api-sso-ensaas.hz.wise-paas.com.cn/v4.0")
@@ -191,10 +191,10 @@ func main() {
 	initGlobalVar()
 
 	if config.ServerLocation == "Cloud" {
-		go auth.CloudSSOToken()
+		// go auth.CloudSSOToken()
 		go auth.CloudIFPToken()
 	} else {
-		auth.OnPremiseDashboardToken()
+		// auth.OnPremiseDashboardToken()
 		go auth.OnPremiseIFPToken()
 	}
 
@@ -203,7 +203,7 @@ func main() {
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println(config.ServiceName, "Init")
 	deskPrincipal()
-	dashboardPrincipal()
+	// dashboardPrincipal()
 	fmt.Println()
 
 	go topoStarter()
