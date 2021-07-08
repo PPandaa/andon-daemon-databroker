@@ -158,7 +158,7 @@ func importSRPRequest(filePath string) {
 	for _, json := range srpRequestJSON {
 		configJs := json["configJs"].(string)
 		json["srpName"] = config.ServiceName
-		json["logoImg"] = config.IFPS_ANDON_UI_URL.String() + "/_nuxt/img/Andon@1x.ff8bda8.svg"
+		json["logoImg"] = "http://127.0.0.1:5000/_nuxt/img/Andon@1x.ff8bda8.svg"
 		json["configJs"] = strings.ReplaceAll(configJs, "dashboardHostname", config.DASHBOARD_API_URL.Hostname())
 		json["configJs"] = strings.ReplaceAll(configJs, "serviceName", config.ServiceName)
 		json["configJs"] = strings.ReplaceAll(configJs, "serviceFolderID", strconv.Itoa(serviceFolderID))

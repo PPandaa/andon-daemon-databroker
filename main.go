@@ -87,13 +87,6 @@ func initGlobalVar() {
 		config.IFPS_ANDON_DAEMON_DATABROKER_API_URL, _ = url.Parse("https://ifps-andon-daemon-databroker-" + config.Namespace + "-" + config.Cluster + "." + config.External)
 	}
 
-	ifps_andon_ui_url := os.Getenv("IFPS_ANDON_UI_URL")
-	if len(ifps_andon_ui_url) != 0 {
-		config.IFPS_ANDON_UI_URL, _ = url.Parse(ifps_andon_ui_url)
-	} else {
-		config.IFPS_ANDON_UI_URL, _ = url.Parse("https://ifps-andon-" + config.Namespace + "-" + config.Cluster + "." + config.External)
-	}
-
 	config.DASHBOARD_API_URL, _ = url.Parse(os.Getenv("DASHBOARD_API_URL"))
 
 	ifps_andon_datasource_api_url := os.Getenv("IFPS_ANDON_DATASOURCE_API_URL")
@@ -117,7 +110,6 @@ func initGlobalVar() {
 	fmt.Println("DASHBOARD API -> URL:", config.DASHBOARD_API_URL)
 	fmt.Println("IFP DESK API -> URL:", config.IFP_DESK_API_URL)
 	fmt.Println("IFP DESK DATASOURCE API -> URL:", config.IFP_DESK_DATASOURCE_API_URL)
-	fmt.Println("IFPS ANDON UI -> URL:", config.IFPS_ANDON_UI_URL)
 	fmt.Println("IFPS ANDON DATASOURCE API -> URL:", config.IFPS_ANDON_DATASOURCE_API_URL)
 	fmt.Println("IFPS ANDON DAEMON DATABROKER API -> URL:", config.IFPS_ANDON_DAEMON_DATABROKER_API_URL)
 
@@ -191,10 +183,10 @@ func main() {
 	initGlobalVar()
 
 	if config.ServerLocation == "Cloud" {
-		// go auth.CloudSSOToken()
+		go auth.CloudSSOToken()
 		go auth.CloudIFPToken()
 	} else {
-		// auth.OnPremiseDashboardToken()
+		auth.OnPremiseDashboardToken()
 		go auth.OnPremiseIFPToken()
 	}
 
@@ -203,7 +195,7 @@ func main() {
 	fmt.Println("----------", time.Now().In(config.TaipeiTimeZone), "----------")
 	fmt.Println(config.ServiceName, "Init")
 	deskPrincipal()
-	// dashboardPrincipal()
+	dashboardPrincipal()
 	fmt.Println()
 
 	go topoStarter()
