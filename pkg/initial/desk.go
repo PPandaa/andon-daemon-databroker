@@ -28,7 +28,12 @@ func RegisterCommandCenter(regName string) {
 	if isAppRegisterCommandCenter {
 		fmt.Println("      iApp", regName, "is already exist")
 	} else {
-		content := map[string]interface{}{"name": regName, "link": "http://127.0.0.1:8080/frame/" + config.ServiceName + "?orgId=1&language=en-US&theme=gray&refresh=5s", "iconUrl": "http://127.0.0.1:5000/_nuxt/img/Andon@1x.ff8bda8.svg", "display": "Show"}
+		var content map[string]interface{}
+		if config.ServerLocation == "Cloud" {
+			content = map[string]interface{}{"name": regName, "link": config.DASHBOARD_API_URL.String() + "/frame/" + config.ServiceName + "?orgId=1&language=en-US&theme=gray&refresh=5s", "iconUrl": config.IFPS_ANDON_UI_URL.String() + "/_nuxt/img/Andon@1x.ff8bda8.svg", "display": "Show"}
+		} else {
+			content = map[string]interface{}{"name": regName, "link": "http://127.0.0.1:8080/frame/" + config.ServiceName + "?orgId=1&language=en-US&theme=gray&refresh=5s", "iconUrl": "http://127.0.0.1:5000/_nuxt/img/Andon@1x.ff8bda8.svg", "display": "Show"}
+		}
 		variable := map[string]interface{}{"iAppInput": content}
 		httpRequestBody, _ = json.Marshal(map[string]interface{}{
 			"query":     "mutation ($iAppInput: AddIAppInput!) { addIApp(input: $iAppInput) { iApp { name } } }",

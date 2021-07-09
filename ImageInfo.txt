@@ -27,3 +27,4 @@
 [2021-07-07 19:53:38] 1.0.14 => dev {change FromLocalImportPlugins()}
 [2021-07-07 20:10:59] 1.0.15 => dev {annotation dashboardPrincipal()}
 [2021-07-08 15:23:32] 1.0.16 => On-Premise {delete IFPS_ANDON_UI_URL}
+[2021-07-09 10:19:24] 1.0.17 => dev {change initGlobalVar()}
