@@ -345,10 +345,10 @@
                             "label": "$machineId",
                             "value": "$machineId"
                         },
-                        "metrics": "Singlestat-EventHist",
+                        "metrics": "Singlestat-Event",
                         "metricsItem": {
-                            "label": "Singlestat-EventHist",
-                            "value": "Singlestat-EventHist"
+                            "label": "Singlestat-Event",
+                            "value": "Singlestat-Event"
                         },
                         "refId": "A",
                         "type": "table",
@@ -2160,10 +2160,10 @@
                             "label": "$machineId",
                             "value": "$machineId"
                         },
-                        "metrics": "Table-EventHist",
+                        "metrics": "Table-Event",
                         "metricsItem": {
-                            "label": "Table-EventHist",
-                            "value": "Table-EventHist"
+                            "label": "Table-Event",
+                            "value": "Table-Event"
                         },
                         "refId": "A",
                         "type": "table",
